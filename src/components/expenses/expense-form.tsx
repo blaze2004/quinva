@@ -74,7 +74,7 @@ export default function ExpenseForm({
   useEffect(() => {
     const fetchGoals = async () => {
       try {
-        const response = await fetch("/api/goals?limit=100&isCompleted=false");
+        const response = await fetch("/api/budgets?limit=100&isCompleted=false");
         if (response.ok) {
           const data = await response.json();
           setGoals(
