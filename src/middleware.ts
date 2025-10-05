@@ -37,7 +37,8 @@ export const config = {
      * 4. /_vercel (Vercel internals)
      * 5. Static files (e.g. /favicon.ico, /sitemap.xml, /robots.txt, etc.)
      * 7. /api/ (API routes)
+     * 8. /api-docs (API documentation)
      */
-    "/((?!_next/|_proxy/|_static|_vercel|api/|[\\w-]+\\.\\w+).*)",
+    "/((?!_next/|_proxy/|_static|_vercel|api-docs|api/|[\\w-]+\\.\\w+).*)",
   ],
 };

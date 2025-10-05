@@ -4,6 +4,7 @@ import {
   CircleUserRound,
   HandCoins,
   Home,
+  Receipt,
   Users,
 } from "lucide-react";
 import { AppSidebar, SidebarProps } from "./app-sidebar";
@@ -15,6 +16,11 @@ export const sidebarData: SidebarProps = {
       title: "Dashboard",
       url: "/dashboard",
       icon: Home,
+    },
+    {
+      title: "Expenses",
+      url: "/expenses",
+      icon: Receipt,
     },
     {
       title: "Groups",

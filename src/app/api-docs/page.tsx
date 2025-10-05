@@ -1,16 +1,22 @@
-import "swagger-ui-react/swagger-ui.css";
+"use client";
 
-import dynamic from "next/dynamic";
+import { useEffect, useState } from "react";
+import { RedocStandalone } from "redoc";
 
-const SwaggerUI = dynamic(() => import("swagger-ui-react"), {
-  ssr: false,
-  loading: () => <p>Loading Component...</p>,
-});
+export default function ApiDocsPage() {
+  const [mounted, setMounted] = useState(false);
 
-export default async function ApiDocsPage() {
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    return null;
+  }
+
   return (
     <section>
-      <SwaggerUI url="/openapi.json" />
+      <RedocStandalone specUrl="/openapi.json" />
     </section>
   );
 }
