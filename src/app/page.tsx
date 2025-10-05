@@ -19,12 +19,6 @@ export default function Home() {
               with a clear, beautiful interface.
             </p>
             <div className="flex items-center gap-4 flex-wrap">
-              <button
-                type="button"
-                className="px-8 py-4 rounded-full bg-transparent border border-white/30 text-white font-normal text-sm md:text-base transition-all duration-200 hover:bg-white/10 hover:border-white/50 cursor-pointer"
-              >
-                How It Works
-              </button>
               <Link href="/login">
                 <button
                   type="button"
