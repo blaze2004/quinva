@@ -9,7 +9,6 @@ import prisma from "../prisma";
 import { resend } from "../resend";
 
 export const auth = betterAuth({
-  baseURL: clientEnv.NEXT_PUBLIC_URL,
   database: prismaAdapter(prisma, {
     provider: "postgresql",
   }),
