@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import prisma from "@/lib/prisma";
 
@@ -17,7 +17,7 @@ export async function GET(request: NextRequest) {
     if (!session) {
       return NextResponse.json(
         { error: "Unauthorized", code: "UNAUTHORIZED" },
-        { status: 401 }
+        { status: 401 },
       );
     }
 
@@ -138,7 +138,7 @@ export async function GET(request: NextRequest) {
     console.error("Error fetching dashboard stats:", error);
     return NextResponse.json(
       { error: "Internal server error", code: "INTERNAL_ERROR" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

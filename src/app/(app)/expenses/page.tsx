@@ -1,7 +1,7 @@
 "use client";
 
+import { Plus } from "lucide-react";
 import { useState } from "react";
-import { Expense } from "@/lib/zod/expense";
 import ExpenseForm from "@/components/expenses/expense-form";
 import ExpenseList from "@/components/expenses/expense-list";
 import { Button } from "@/components/ui/button";
@@ -12,7 +12,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Plus } from "lucide-react";
+import type { Expense } from "@/lib/zod/expense";
 
 export default function ExpensesPage() {
   const [editingExpense, setEditingExpense] = useState<Expense | null>(null);

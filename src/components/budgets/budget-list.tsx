@@ -1,8 +1,23 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { Budget, BudgetListResponse } from "@/lib/zod/budget";
+import {
+  AlertTriangle,
+  Calendar,
+  CheckCircle,
+  ChevronLeft,
+  ChevronRight,
+  Edit,
+  Filter,
+  Target,
+  Trash2,
+  X,
+} from "lucide-react";
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Progress } from "@/components/ui/progress";
 import {
   Select,
   SelectContent,
@@ -10,23 +25,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Progress } from "@/components/ui/progress";
-import {
-  ChevronLeft,
-  ChevronRight,
-  Edit,
-  Trash2,
-  Filter,
-  X,
-  CheckCircle,
-  Target,
-  Calendar,
-  AlertTriangle,
-} from "lucide-react";
-import { toast } from "sonner";
+import type { Budget, BudgetListResponse } from "@/lib/zod/budget";
 
 interface BudgetListProps {
   onEditBudget?: (budget: Budget) => void;
@@ -85,7 +85,7 @@ export default function BudgetList({
   const handleDeleteBudget = async (id: string) => {
     if (
       !confirm(
-        "Are you sure you want to delete this budget? Associated expenses will be unlinked."
+        "Are you sure you want to delete this budget? Associated expenses will be unlinked.",
       )
     )
       return;
@@ -353,7 +353,7 @@ export default function BudgetList({
               {(budgets.pagination.page - 1) * budgets.pagination.limit + 1} to{" "}
               {Math.min(
                 budgets.pagination.page * budgets.pagination.limit,
-                budgets.pagination.total
+                budgets.pagination.total,
               )}{" "}
               of {budgets.pagination.total} budgets
             </p>

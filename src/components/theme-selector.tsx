@@ -1,10 +1,9 @@
 "use client";
-import { useTheme } from "next-themes";
 import { LaptopIcon } from "lucide-react";
+import { useTheme } from "next-themes";
 import { Button } from "@/components/ui/button";
-import { SunIcon } from "@/components/ui/icons/sun";
 import { MoonIcon } from "@/components/ui/icons/moon";
-import { cn } from "@/lib/utils";
+import { SunIcon } from "@/components/ui/icons/sun";
 import {
   Select,
   SelectContent,
@@ -12,6 +11,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { cn } from "@/lib/utils";
 
 interface ThemeSelectorProps {
   className?: string;

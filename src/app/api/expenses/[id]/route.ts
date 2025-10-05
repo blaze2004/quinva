@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import prisma from "@/lib/prisma";
 import { UpdateExpenseSchema } from "@/lib/zod/expense";
@@ -11,7 +11,7 @@ import { UpdateExpenseSchema } from "@/lib/zod/expense";
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: { id: string } },
 ) {
   try {
     const session = await auth.api.getSession({
@@ -21,7 +21,7 @@ export async function GET(
     if (!session) {
       return NextResponse.json(
         { error: "Unauthorized", code: "UNAUTHORIZED" },
-        { status: 401 }
+        { status: 401 },
       );
     }
 
@@ -37,7 +37,7 @@ export async function GET(
     if (!expense) {
       return NextResponse.json(
         { error: "Expense not found", code: "NOT_FOUND" },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
@@ -46,7 +46,7 @@ export async function GET(
     console.error("Error fetching expense:", error);
     return NextResponse.json(
       { error: "Internal server error", code: "INTERNAL_ERROR" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -58,7 +58,7 @@ export async function GET(
  */
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: { id: string } },
 ) {
   try {
     const session = await auth.api.getSession({
@@ -68,7 +68,7 @@ export async function PUT(
     if (!session) {
       return NextResponse.json(
         { error: "Unauthorized", code: "UNAUTHORIZED" },
-        { status: 401 }
+        { status: 401 },
       );
     }
 
@@ -84,7 +84,7 @@ export async function PUT(
     if (!existingExpense) {
       return NextResponse.json(
         { error: "Expense not found", code: "NOT_FOUND" },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
@@ -94,7 +94,7 @@ export async function PUT(
     if (!validatedData.success) {
       return NextResponse.json(
         { error: "Invalid request data", code: "BAD_REQUEST" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -109,7 +109,7 @@ export async function PUT(
 
     return NextResponse.json(
       { error: "Internal server error", code: "INTERNAL_ERROR" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -121,7 +121,7 @@ export async function PUT(
  */
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: { id: string } },
 ) {
   try {
     // Get session from headers
@@ -132,7 +132,7 @@ export async function DELETE(
     if (!session) {
       return NextResponse.json(
         { error: "Unauthorized", code: "UNAUTHORIZED" },
-        { status: 401 }
+        { status: 401 },
       );
     }
 
@@ -148,7 +148,7 @@ export async function DELETE(
     if (!existingExpense) {
       return NextResponse.json(
         { error: "Expense not found", code: "NOT_FOUND" },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
@@ -163,7 +163,7 @@ export async function DELETE(
     console.error("Error deleting expense:", error);
     return NextResponse.json(
       { error: "Internal server error", code: "INTERNAL_ERROR" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

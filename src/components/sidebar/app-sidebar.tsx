@@ -1,10 +1,9 @@
 "use client";
 
-import * as React from "react";
-import { LucideIcon } from "lucide-react";
-
-import { NavMain } from "./nav-main";
-import { NavUser } from "./nav-user";
+import type { LucideIcon } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import type * as React from "react";
 import {
   Sidebar,
   SidebarContent,
@@ -14,9 +13,9 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import Image from "next/image";
-import Link from "next/link";
+import { NavMain } from "./nav-main";
 import { NavSecondary } from "./nav-secondary";
+import { NavUser } from "./nav-user";
 
 export type SidebarProps = {
   subTitle: string;

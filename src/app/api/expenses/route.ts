@@ -1,11 +1,7 @@
-import { NextRequest, NextResponse } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import prisma from "@/lib/prisma";
-import {
-  CreateExpenseSchema,
-  ExpenseListResponseSchema,
-  ExpenseQuerySchema,
-} from "@/lib/zod/expense";
+import { CreateExpenseSchema, ExpenseQuerySchema } from "@/lib/zod/expense";
 
 /**
  * Get user expenses with filtering and pagination
@@ -22,12 +18,12 @@ export async function GET(request: NextRequest) {
     if (!session) {
       return NextResponse.json(
         { error: "Unauthorized", code: "UNAUTHORIZED" },
-        { status: 401 }
+        { status: 401 },
       );
     }
 
     const queryParams = Object.fromEntries(
-      request.nextUrl.searchParams.entries()
+      request.nextUrl.searchParams.entries(),
     );
 
     const { success, data: validatedQuery } =
@@ -36,7 +32,7 @@ export async function GET(request: NextRequest) {
     if (!success) {
       return NextResponse.json(
         { error: "Invalid query parameters", code: "BAD_REQUEST" },
-        { status: 400 }
+        { status: 400 },
       );
     }
     const {
@@ -109,7 +105,7 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json(
       { error: "Internal server error", code: "INTERNAL_ERROR" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -128,7 +124,7 @@ export async function POST(request: NextRequest) {
     if (!session) {
       return NextResponse.json(
         { error: "Unauthorized", code: "UNAUTHORIZED" },
-        { status: 401 }
+        { status: 401 },
       );
     }
 
@@ -139,7 +135,7 @@ export async function POST(request: NextRequest) {
     if (!success) {
       return NextResponse.json(
         { error: "Invalid request data", code: "BAD_REQUEST" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -156,7 +152,7 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json(
       { error: "Internal server error", code: "INTERNAL_ERROR" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

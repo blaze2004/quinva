@@ -1,20 +1,19 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import {
+  ArrowDownRight,
+  ArrowUpRight,
+  Calendar,
+  PieChart,
+  Target,
+  Trophy,
+  Wallet,
+} from "lucide-react";
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
-import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
-import {
-  Target,
-  Wallet,
-  PieChart,
-  Calendar,
-  Trophy,
-  ArrowUpRight,
-  ArrowDownRight,
-} from "lucide-react";
-import { toast } from "sonner";
 
 interface DashboardStats {
   expenses: {
@@ -204,7 +203,9 @@ export default function DashboardPage() {
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Budget Spending</CardTitle>
+            <CardTitle className="text-sm font-medium">
+              Budget Spending
+            </CardTitle>
             <Trophy className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
@@ -335,7 +336,7 @@ export default function DashboardPage() {
                     <span className="text-sm font-medium">
                       {formatCurrency(
                         stats.budgets.totalTargetAmount -
-                          stats.budgets.totalCurrentAmount
+                          stats.budgets.totalCurrentAmount,
                       )}
                     </span>
                   </div>

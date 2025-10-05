@@ -1,7 +1,7 @@
 "use client";
 
+import { Target } from "lucide-react";
 import { useState } from "react";
-import { Budget } from "@/lib/zod/budget";
 import BudgetForm from "@/components/budgets/budget-form";
 import BudgetList from "@/components/budgets/budget-list";
 import { Button } from "@/components/ui/button";
@@ -12,7 +12,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Target } from "lucide-react";
+import type { Budget } from "@/lib/zod/budget";
 
 export default function BudgetsPage() {
   const [editingBudget, setEditingBudget] = useState<Budget | null>(null);

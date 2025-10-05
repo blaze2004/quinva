@@ -1,9 +1,9 @@
-import { NextRequest, NextResponse } from "next/server";
+import { Decimal } from "@prisma/client/runtime/library";
+import { type NextRequest, NextResponse } from "next/server";
+import type { Budget } from "@/generated/prisma";
 import { auth } from "@/lib/auth";
 import prisma from "@/lib/prisma";
-import { CreateBudgetSchema, BudgetQuerySchema } from "@/lib/zod/budget";
-import { Decimal } from "@prisma/client/runtime/library";
-import { Budget } from "@/generated/prisma";
+import { BudgetQuerySchema, CreateBudgetSchema } from "@/lib/zod/budget";
 
 export function calculateBudgetMetrics(budget: Partial<Budget>) {
   const targetAmount = Number(budget.targetAmount);
@@ -49,12 +49,12 @@ export async function GET(request: NextRequest) {
     if (!session) {
       return NextResponse.json(
         { error: "Unauthorized", code: "UNAUTHORIZED" },
-        { status: 401 }
+        { status: 401 },
       );
     }
 
     const queryParams = Object.fromEntries(
-      request.nextUrl.searchParams.entries()
+      request.nextUrl.searchParams.entries(),
     );
 
     const { data: validatedQuery, success } =
@@ -63,7 +63,7 @@ export async function GET(request: NextRequest) {
     if (!success) {
       return NextResponse.json(
         { error: "Invalid query parameters", code: "BAD_REQUEST" },
-        { status: 400 }
+        { status: 400 },
       );
     }
     const { page, limit, isCompleted, hasDeadline } = validatedQuery;
@@ -135,13 +135,13 @@ export async function GET(request: NextRequest) {
     if (error instanceof Error && error.name === "ZodError") {
       return NextResponse.json(
         { error: "Invalid query parameters", code: "BAD_REQUEST" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
     return NextResponse.json(
       { error: "Internal server error", code: "INTERNAL_ERROR" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -160,7 +160,7 @@ export async function POST(request: NextRequest) {
     if (!session) {
       return NextResponse.json(
         { error: "Unauthorized", code: "UNAUTHORIZED" },
-        { status: 401 }
+        { status: 401 },
       );
     }
 
@@ -170,7 +170,7 @@ export async function POST(request: NextRequest) {
     if (!validatedData.success) {
       return NextResponse.json(
         { error: "Invalid request data", code: "BAD_REQUEST" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -200,7 +200,7 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json(
       { error: "Internal server error", code: "INTERNAL_ERROR" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

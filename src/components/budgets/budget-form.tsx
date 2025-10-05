@@ -1,11 +1,11 @@
 "use client";
 
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { CreateBudgetSchema } from "@/lib/zod/budget";
+import { toast } from "sonner";
+import type { z } from "zod";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Form,
@@ -15,9 +15,9 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { toast } from "sonner";
-import { z } from "zod";
+import { CreateBudgetSchema } from "@/lib/zod/budget";
 
 type CreateBudgetFormData = z.infer<typeof CreateBudgetSchema>;
 
@@ -72,12 +72,12 @@ export default function BudgetForm({
         const errorData = await response.json();
         throw new Error(
           errorData.error ||
-            `Failed to ${isEditing ? "update" : "create"} budget`
+            `Failed to ${isEditing ? "update" : "create"} budget`,
         );
       }
 
       toast.success(
-        `Budget ${isEditing ? "updated" : "created"} successfully!`
+        `Budget ${isEditing ? "updated" : "created"} successfully!`,
       );
       form.reset();
       onSuccess?.();
@@ -86,7 +86,7 @@ export default function BudgetForm({
       toast.error(
         error instanceof Error
           ? error.message
-          : `Failed to ${isEditing ? "update" : "create"} budget`
+          : `Failed to ${isEditing ? "update" : "create"} budget`,
       );
     } finally {
       setIsLoading(false);
@@ -178,7 +178,7 @@ export default function BudgetForm({
                         field.onChange(
                           e.target.value
                             ? new Date(e.target.value).toISOString()
-                            : undefined
+                            : undefined,
                         )
                       }
                     />

@@ -1,5 +1,5 @@
-import { getCookieCache, getSessionCookie } from "better-auth/cookies";
-import { NextRequest, NextResponse } from "next/server";
+import { getSessionCookie } from "better-auth/cookies";
+import { type NextRequest, NextResponse } from "next/server";
 
 export async function middleware(request: NextRequest) {
   const sessionCookie = getSessionCookie(request);
@@ -19,7 +19,7 @@ export async function middleware(request: NextRequest) {
   } else {
     if (pathname !== "/" && !authPages.includes(pathname)) {
       return NextResponse.redirect(
-        new URL("/login?next=" + encodeURIComponent(pathname), request.url)
+        new URL(`/login?next=${encodeURIComponent(pathname)}`, request.url),
       );
     }
   }

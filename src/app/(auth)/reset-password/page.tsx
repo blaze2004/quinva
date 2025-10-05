@@ -1,19 +1,20 @@
 "use client";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Eye, EyeOff } from "lucide-react";
+import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next13-progressbar";
-import { useForm } from "react-hook-form";
 import { useState } from "react";
-import { Eye, EyeOff } from "lucide-react";
-
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
 import {
   Card,
+  CardContent,
+  CardDescription,
   CardHeader,
   CardTitle,
-  CardDescription,
-  CardContent,
 } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import {
   Form,
   FormControl,
@@ -22,15 +23,13 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import {
-  ResetPasswordSchema,
-  type ResetPasswordFormData,
-} from "@/lib/zod/auth";
+import { Input } from "@/components/ui/input";
 import { Spinner } from "@/components/ui/spinner";
-import { toast } from "sonner";
-import Link from "next/link";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { authClient } from "@/lib/auth/client";
+import {
+  type ResetPasswordFormData,
+  ResetPasswordSchema,
+} from "@/lib/zod/auth";
 
 export default function ResetPasswordPage() {
   const searchParams = useSearchParams();
@@ -67,7 +66,7 @@ export default function ResetPasswordPage() {
       });
       if (error) {
         setErrorMessage(
-          error.message || "Failed to reset password. Try again."
+          error.message || "Failed to reset password. Try again.",
         );
       } else {
         setSuccess(true);

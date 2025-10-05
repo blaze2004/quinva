@@ -1,6 +1,11 @@
 "use client";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Eye, EyeOff } from "lucide-react";
+import Link from "next/link";
+import { useRouter } from "next13-progressbar";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -9,7 +14,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
 import {
   Form,
   FormControl,
@@ -18,14 +22,10 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Eye, EyeOff } from "lucide-react";
-import { SignupFormSchema, type SignupFormData } from "@/lib/zod/auth";
+import { Input } from "@/components/ui/input";
 import { Spinner } from "@/components/ui/spinner";
-import { toast } from "sonner";
-import Link from "next/link";
-import { useRouter } from "next13-progressbar";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { authClient } from "@/lib/auth/client";
+import { type SignupFormData, SignupFormSchema } from "@/lib/zod/auth";
 
 export default function SignupPage() {
   const [isLoading, setIsLoading] = useState(false);
@@ -52,7 +52,7 @@ export default function SignupPage() {
       toast.error(error.message || "Signup failed. Please try again.");
     } else {
       toast.success(
-        "Account created successfully! Please check your email to verify your account."
+        "Account created successfully! Please check your email to verify your account.",
       );
       router.push("/login");
     }

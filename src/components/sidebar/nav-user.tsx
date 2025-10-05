@@ -1,7 +1,7 @@
 "use client";
 
 import { ChevronsUpDown, LogOut } from "lucide-react";
-
+import { useRouter } from "next13-progressbar";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
@@ -18,7 +18,6 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 import { authClient } from "@/lib/auth/client";
-import { useRouter } from "next13-progressbar";
 
 const getNameInitials = (name: string) => {
   const names = name.split(" ");

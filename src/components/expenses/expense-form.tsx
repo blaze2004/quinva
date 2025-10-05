@@ -1,22 +1,12 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  CreateExpenseSchema,
-  SUGGESTED_CATEGORIES,
-  RecurrenceType,
-} from "@/lib/zod/expense";
+import { IndianRupee } from "lucide-react";
+import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import type { z } from "zod";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Form,
@@ -26,9 +16,19 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { toast } from "sonner";
-import { z } from "zod";
-import { IndianRupee } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  CreateExpenseSchema,
+  type RecurrenceType,
+  SUGGESTED_CATEGORIES,
+} from "@/lib/zod/expense";
 
 type CreateExpenseFormData = z.infer<typeof CreateExpenseSchema>;
 
@@ -78,7 +78,7 @@ export default function ExpenseForm({
         if (response.ok) {
           const data = await response.json();
           setGoals(
-            data.goals.map((goal: any) => ({ id: goal.id, name: goal.name }))
+            data.goals.map((goal: any) => ({ id: goal.id, name: goal.name })),
           );
         }
       } catch (error) {
@@ -109,12 +109,12 @@ export default function ExpenseForm({
         const errorData = await response.json();
         throw new Error(
           errorData.error ||
-            `Failed to ${isEditing ? "update" : "create"} expense`
+            `Failed to ${isEditing ? "update" : "create"} expense`,
         );
       }
 
       toast.success(
-        `Expense ${isEditing ? "updated" : "created"} successfully!`
+        `Expense ${isEditing ? "updated" : "created"} successfully!`,
       );
       form.reset();
       onSuccess?.();
@@ -123,7 +123,7 @@ export default function ExpenseForm({
       toast.error(
         error instanceof Error
           ? error.message
-          : `Failed to ${isEditing ? "update" : "create"} expense`
+          : `Failed to ${isEditing ? "update" : "create"} expense`,
       );
     } finally {
       setIsLoading(false);

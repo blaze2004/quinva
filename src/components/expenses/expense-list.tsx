@@ -1,12 +1,10 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import {
-  Expense,
-  ExpenseListResponse,
-  SUGGESTED_CATEGORIES,
-} from "@/lib/zod/expense";
+import { Filter, IndianRupee, TrendingDown, X } from "lucide-react";
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -15,7 +13,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
   Table,
@@ -25,8 +22,11 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Filter, X, IndianRupee, TrendingDown } from "lucide-react";
-import { toast } from "sonner";
+import {
+  type Expense,
+  type ExpenseListResponse,
+  SUGGESTED_CATEGORIES,
+} from "@/lib/zod/expense";
 import { ExpenseTable } from "./expense-table";
 
 interface ExpenseListProps {
@@ -60,7 +60,7 @@ export default function ExpenseList({
 
   const fetchExpenses = async (
     cursor: string | null = null,
-    currentFilters = filters
+    currentFilters = filters,
   ) => {
     try {
       setLoading(true);
@@ -80,12 +80,12 @@ export default function ExpenseList({
       if (currentFilters.startDate)
         params.append(
           "startDate",
-          new Date(currentFilters.startDate).toISOString()
+          new Date(currentFilters.startDate).toISOString(),
         );
       if (currentFilters.endDate)
         params.append(
           "endDate",
-          new Date(currentFilters.endDate).toISOString()
+          new Date(currentFilters.endDate).toISOString(),
         );
 
       const response = await fetch(`/api/expenses?${params.toString()}`);

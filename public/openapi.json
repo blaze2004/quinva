@@ -150,9 +150,7 @@
         "operationId": "get-budgets",
         "summary": "Get user budgets with filtering and pagination",
         "description": "Retrieve a paginated list of budgets for the authenticated user with optional filtering",
-        "tags": [
-          "Budgets"
-        ],
+        "tags": ["Budgets"],
         "parameters": [],
         "responses": {
           "400": {
@@ -167,9 +165,7 @@
         "operationId": "post-budgets",
         "summary": "Create a new budget",
         "description": "Create a new budget for the authenticated user",
-        "tags": [
-          "Budgets"
-        ],
+        "tags": ["Budgets"],
         "parameters": [],
         "responses": {
           "400": {
@@ -186,9 +182,7 @@
         "operationId": "get-budgets-{id}",
         "summary": "Get budget by ID",
         "description": "Retrieve a specific budget by its ID with associated expenses",
-        "tags": [
-          "Budgets"
-        ],
+        "tags": ["Budgets"],
         "parameters": [],
         "responses": {
           "400": {
@@ -203,9 +197,7 @@
         "operationId": "put-budgets-{id}",
         "summary": "Update budget by id",
         "description": "Update a specific budget by its ID",
-        "tags": [
-          "Budgets"
-        ],
+        "tags": ["Budgets"],
         "parameters": [],
         "responses": {
           "400": {
@@ -220,9 +212,7 @@
         "operationId": "delete-budgets-{id}",
         "summary": "Delete a specific budget by its ID",
         "description": "Delete a specific budget by its ID",
-        "tags": [
-          "Budgets"
-        ],
+        "tags": ["Budgets"],
         "parameters": [],
         "responses": {
           "400": {
@@ -239,9 +229,7 @@
         "operationId": "get-expenses",
         "summary": "Get user expenses with filtering and pagination",
         "description": "Retrieve a paginated list of expenses for the authenticated user with optional filtering",
-        "tags": [
-          "Expenses"
-        ],
+        "tags": ["Expenses"],
         "parameters": [],
         "responses": {
           "400": {
@@ -256,9 +244,7 @@
         "operationId": "post-expenses",
         "summary": "Create a new expense",
         "description": "Create a new expense for the authenticated user",
-        "tags": [
-          "Expenses"
-        ],
+        "tags": ["Expenses"],
         "parameters": [],
         "responses": {
           "400": {
@@ -275,9 +261,7 @@
         "operationId": "get-expenses-{id}",
         "summary": "Get expense by ID",
         "description": "Retrieve a specific expense by its ID",
-        "tags": [
-          "Expenses"
-        ],
+        "tags": ["Expenses"],
         "parameters": [],
         "responses": {
           "400": {
@@ -292,9 +276,7 @@
         "operationId": "put-expenses-{id}",
         "summary": "Update an existing expense",
         "description": "Update an existing expense by its ID for the authenticated user",
-        "tags": [
-          "Expenses"
-        ],
+        "tags": ["Expenses"],
         "parameters": [],
         "responses": {
           "400": {
@@ -309,9 +291,7 @@
         "operationId": "delete-expenses-{id}",
         "summary": "Delete an existing expense",
         "description": "Delete an existing expense by its ID for the authenticated user",
-        "tags": [
-          "Expenses"
-        ],
+        "tags": ["Expenses"],
         "parameters": [],
         "responses": {
           "400": {
@@ -328,9 +308,7 @@
         "operationId": "get-stats",
         "summary": "Get dashboard statistics",
         "description": "Retrieve overview statistics for expenses and budgets",
-        "tags": [
-          "Stats"
-        ],
+        "tags": ["Stats"],
         "parameters": [],
         "responses": {
           "400": {

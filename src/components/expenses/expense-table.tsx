@@ -1,20 +1,18 @@
 "use client";
 
-import { useState } from "react";
 import {
-  ColumnDef,
-  ColumnFiltersState,
-  SortingState,
-  VisibilityState,
+  type ColumnDef,
+  type ColumnFiltersState,
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
   getSortedRowModel,
+  type SortingState,
   useReactTable,
+  type VisibilityState,
 } from "@tanstack/react-table";
 import { ArrowUpDown, Edit, Trash2 } from "lucide-react";
-
-import { Button } from "@/components/ui/button";
+import { useState } from "react";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -26,6 +24,8 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
   Table,
@@ -35,8 +35,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Badge } from "@/components/ui/badge";
-import { Expense } from "@/lib/zod/expense";
+import type { Expense } from "@/lib/zod/expense";
 
 interface ExpenseTableProps {
   data: Expense[];
@@ -244,7 +243,7 @@ export function ExpenseTable({
                         ? null
                         : flexRender(
                             header.column.columnDef.header,
-                            header.getContext()
+                            header.getContext(),
                           )}
                     </TableHead>
                   );
@@ -263,7 +262,7 @@ export function ExpenseTable({
                     <TableCell key={cell.id}>
                       {flexRender(
                         cell.column.columnDef.cell,
-                        cell.getContext()
+                        cell.getContext(),
                       )}
                     </TableCell>
                   ))}

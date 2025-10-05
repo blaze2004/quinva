@@ -15,7 +15,7 @@ export const SignupFormSchema = z.object({
     .max(20, "Username can't be longer than 20 characters")
     .regex(
       /^[a-zA-Z0-9_]+$/,
-      "Username can only contain letters, numbers, and underscores"
+      "Username can only contain letters, numbers, and underscores",
     ),
   name: z.string().min(2, "Name must be at least 2 characters"),
   email: z.email("Please enter a valid email address"),
@@ -24,7 +24,7 @@ export const SignupFormSchema = z.object({
     .min(8, "Password must be at least 8 characters")
     .regex(
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/,
-      "Password must contain at least one lowercase letter, one uppercase letter, and one number"
+      "Password must contain at least one lowercase letter, one uppercase letter, and one number",
     ),
 });
 
@@ -39,7 +39,7 @@ export const ResetPasswordSchema = z
       .min(8, "Password must be at least 8 characters")
       .regex(
         /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/,
-        "Password must contain at least one lowercase letter, one uppercase letter, and one number"
+        "Password must contain at least one lowercase letter, one uppercase letter, and one number",
       ),
     confirmPassword: z.string(),
   })

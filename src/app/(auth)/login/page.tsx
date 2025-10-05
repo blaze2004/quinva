@@ -1,7 +1,12 @@
 "use client";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Eye, EyeOff } from "lucide-react";
+import Link from "next/link";
+import { useSearchParams } from "next/navigation";
+import { useRouter } from "next13-progressbar";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -10,7 +15,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
 import {
   Form,
   FormControl,
@@ -19,14 +23,10 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Eye, EyeOff } from "lucide-react";
-import { LoginFormSchema, type LoginFormData } from "@/lib/zod/auth";
+import { Input } from "@/components/ui/input";
 import { Spinner } from "@/components/ui/spinner";
-import { toast } from "sonner";
-import Link from "next/link";
-import { useSearchParams } from "next/navigation";
 import { authClient } from "@/lib/auth/client";
-import { useRouter } from "next13-progressbar";
+import { type LoginFormData, LoginFormSchema } from "@/lib/zod/auth";
 
 export default function LoginPage() {
   const [isLoading, setIsLoading] = useState(false);

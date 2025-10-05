@@ -6,7 +6,10 @@ export const CreateBudgetSchema = z.object({
     .min(1, "Budget name is required")
     .max(100, "Budget name is too long"),
   description: z.string().max(500, "Description is too long").optional(),
-  targetAmount: z.number().positive("Target amount must be positive").max(100000000, "Target amount is too large"),
+  targetAmount: z
+    .number()
+    .positive("Target amount must be positive")
+    .max(100000000, "Target amount is too large"),
   deadline: z.iso.datetime().optional(),
 });
 
@@ -57,10 +60,9 @@ export const BudgetWithExpensesSchema = BudgetSchema.extend({
       amount: z.number(),
       category: z.string(),
       date: z.date(),
-    })
+    }),
   ),
 });
-
 
 export type Budget = z.infer<typeof BudgetSchema>;
 export type BudgetListResponse = z.infer<typeof BudgetListResponseSchema>;

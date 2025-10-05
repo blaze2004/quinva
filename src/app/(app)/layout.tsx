@@ -1,13 +1,13 @@
+import { headers } from "next/headers";
+import { redirect } from "next/navigation";
+import QuinvaSidebar from "@/components/sidebar";
 import { Separator } from "@/components/ui/separator";
 import {
   SidebarInset,
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
-import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth";
-import { headers } from "next/headers";
-import QuinvaSidebar from "@/components/sidebar";
 
 export default async function AdminPortalRootLayout({
   children,

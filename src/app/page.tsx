@@ -1,5 +1,5 @@
-import ShaderBackground from "@/components/shader-background";
 import Link from "next/link";
+import ShaderBackground from "@/components/shader-background";
 
 export default function Home() {
   return (

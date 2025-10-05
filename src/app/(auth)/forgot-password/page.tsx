@@ -1,6 +1,10 @@
 "use client";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { ArrowLeft } from "lucide-react";
+import Link from "next/link";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -9,7 +13,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
 import {
   Form,
   FormControl,
@@ -18,17 +21,14 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import {
-  ForgotPasswordSchema,
-  type ForgotPasswordFormData,
-} from "@/lib/zod/auth";
+import { Input } from "@/components/ui/input";
 import { Spinner } from "@/components/ui/spinner";
-import { toast } from "sonner";
-import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { authClient } from "@/lib/auth/client";
 import { clientEnv } from "@/config/env/client";
+import { authClient } from "@/lib/auth/client";
+import {
+  type ForgotPasswordFormData,
+  ForgotPasswordSchema,
+} from "@/lib/zod/auth";
 
 export default function ForgotPasswordPage() {
   const [isLoading, setIsLoading] = useState(false);

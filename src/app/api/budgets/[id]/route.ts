@@ -1,8 +1,8 @@
-import { NextRequest, NextResponse } from "next/server";
+import { Decimal } from "@prisma/client/runtime/library";
+import { type NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import prisma from "@/lib/prisma";
 import { UpdateBudgetSchema } from "@/lib/zod/budget";
-import { Decimal } from "@prisma/client/runtime/library";
 import { calculateBudgetMetrics } from "../route";
 
 /**
@@ -12,7 +12,7 @@ import { calculateBudgetMetrics } from "../route";
  */
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: { id: string } },
 ) {
   try {
     const session = await auth.api.getSession({
@@ -22,7 +22,7 @@ export async function GET(
     if (!session) {
       return NextResponse.json(
         { error: "Unauthorized", code: "UNAUTHORIZED" },
-        { status: 401 }
+        { status: 401 },
       );
     }
 
@@ -52,7 +52,7 @@ export async function GET(
     if (!budget) {
       return NextResponse.json(
         { error: "Budget not found", code: "NOT_FOUND" },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
@@ -76,7 +76,7 @@ export async function GET(
     console.error("Error fetching budget:", error);
     return NextResponse.json(
       { error: "Internal server error", code: "INTERNAL_ERROR" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -88,7 +88,7 @@ export async function GET(
  */
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: { id: string } },
 ) {
   try {
     const session = await auth.api.getSession({
@@ -98,7 +98,7 @@ export async function PUT(
     if (!session) {
       return NextResponse.json(
         { error: "Unauthorized", code: "UNAUTHORIZED" },
-        { status: 401 }
+        { status: 401 },
       );
     }
 
@@ -114,7 +114,7 @@ export async function PUT(
     if (!existingBudget) {
       return NextResponse.json(
         { error: "Budget not found", code: "NOT_FOUND" },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
@@ -124,7 +124,7 @@ export async function PUT(
     if (!success) {
       return NextResponse.json(
         { error: "Invalid request data", code: "BAD_REQUEST" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -169,7 +169,7 @@ export async function PUT(
 
     return NextResponse.json(
       { error: "Internal server error", code: "INTERNAL_ERROR" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -181,7 +181,7 @@ export async function PUT(
  */
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: { id: string } },
 ) {
   try {
     const session = await auth.api.getSession({
@@ -191,7 +191,7 @@ export async function DELETE(
     if (!session) {
       return NextResponse.json(
         { error: "Unauthorized", code: "UNAUTHORIZED" },
-        { status: 401 }
+        { status: 401 },
       );
     }
 
@@ -207,7 +207,7 @@ export async function DELETE(
     if (!existingBudget) {
       return NextResponse.json(
         { error: "Budget not found", code: "NOT_FOUND" },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
@@ -222,7 +222,7 @@ export async function DELETE(
     console.error("Error deleting budget:", error);
     return NextResponse.json(
       { error: "Internal server error", code: "INTERNAL_ERROR" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

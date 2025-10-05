@@ -1,12 +1,12 @@
 import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
-import { username } from "better-auth/plugins";
 import { nextCookies } from "better-auth/next-js";
+import { username } from "better-auth/plugins";
 import { clientEnv } from "@/config/env/client";
+import ResetPassword from "@/email/reset-password";
+import { EmailVerification } from "@/email/verify-email";
 import prisma from "../prisma";
 import { resend } from "../resend";
-import { EmailVerification } from "@/email/verify-email";
-import ResetPassword from "@/email/reset-password";
 
 export const auth = betterAuth({
   baseURL: clientEnv.NEXT_PUBLIC_URL,
@@ -15,7 +15,7 @@ export const auth = betterAuth({
   }),
   emailAndPassword: {
     enabled: true,
-    sendResetPassword: async ({ user, url, token }, request) => {
+    sendResetPassword: async ({ user, url }) => {
       const { error } = await resend.emails.send({
         from: "Quinva <no-reply@quinva.visualbrahma.tech>",
         to: user.email!,

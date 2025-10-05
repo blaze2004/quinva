@@ -1,11 +1,11 @@
 "use client";
 
-import React from "react";
-import { motion, Transition } from "framer-motion";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
+import { motion, type Transition } from "framer-motion";
 import { ArrowLeftIcon, HomeIcon } from "lucide-react";
+import Link from "next/link";
 import { useRouter } from "next13-progressbar";
+import React from "react";
+import { Button } from "@/components/ui/button";
 
 export default function NotFoundPage() {
   const bounceTransition: Transition = {
@@ -33,10 +33,12 @@ export default function NotFoundPage() {
         >
           404
         </motion.h1>
-        <h2 className="text-2xl md:text-3xl font-semibold  mb-4">Oops! Page Not Found</h2>
+        <h2 className="text-2xl md:text-3xl font-semibold  mb-4">
+          Oops! Page Not Found
+        </h2>
         <p className="text-lg text-muted-foreground mb-8 max-w-md mx-auto">
-          Don&apos;t worry, even the calmest minds lose their way sometimes. Let&apos;s get you back
-          on track.
+          Don&apos;t worry, even the calmest minds lose their way sometimes.
+          Let&apos;s get you back on track.
         </p>
 
         <div className="flex flex-col sm:flex-row justify-center items-center space-y-4 sm:space-y-0 sm:space-x-4">

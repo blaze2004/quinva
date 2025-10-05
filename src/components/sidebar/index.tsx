@@ -1,6 +1,6 @@
 "use client";
 import { CircleUserRound, Home, Receipt, Target } from "lucide-react";
-import { AppSidebar, SidebarProps } from "./app-sidebar";
+import { AppSidebar, type SidebarProps } from "./app-sidebar";
 
 export const sidebarData: SidebarProps = {
   subTitle: "Manage your expenses",
