@@ -16,15 +16,16 @@ datasource db {
 }
 
 model User {
-  id            String    @id
+  id            String        @id
   name          String
   email         String
-  emailVerified Boolean   @default(false)
+  emailVerified Boolean       @default(false)
   image         String?
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @default(now()) @updatedAt
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @default(now()) @updatedAt
   sessions      Session[]
   accounts      Account[]
+  groups        GroupMember[]
 
   username        String?
   displayUsername String?
@@ -77,4 +78,40 @@ model Verification {
   updatedAt  DateTime @default(now()) @updatedAt
 
   @@map("verification")
+}
+
+model Group {
+  id          String        @id @default(dbgenerated("gen_random_uuid()"))
+  name        String
+  slug        String        @unique()
+  icon        String?
+  createdAt   DateTime      @default(now()) @db.Timestamptz(6)
+  members     GroupMember[]
+  invitations Invitation[]
+}
+
+enum ROLE {
+  OWNER
+  MEMBER
+}
+
+model GroupMember {
+  id      String @id @default(dbgenerated("gen_random_uuid()"))
+  groupId String
+  group   Group  @relation(fields: [groupId], references: [id])
+  userId  String
+  user    User   @relation(fields: [userId], references: [id])
+  role    ROLE   @default(MEMBER)
+
+  @@unique([groupId, userId])
+}
+
+model Invitation {
+  id      String @id @default(dbgenerated("gen_random_uuid()"))
+  email   String
+  groupId String
+  group   Group  @relation(fields: [groupId], references: [id])
+
+  createdAt DateTime @default(now()) @db.Timestamptz(6)
+  expiresAt DateTime @db.Timestamptz(6)
 }

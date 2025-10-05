@@ -215,3 +215,11 @@ output: suggested redefining thr theme in a ts file and use that, which is not a
 prompt: create a shared layout for emails and define the theme and header, footer in there (for preview use dummy child), use the layout in verify email and group invitation email templates 
 
 output: creted a common layout for emails and updated exisiting emails to use it.
+
+# prompt 3
+
+if i want to assign each group an icon or let say an emoji, what's the best option , storing the emoji directly in db or storing its name and rendering it  dynamically in the frontend (if second one is better also suggest any library which supports this,  i remember using fumadocs, it had a similar feature ) 
+
+context: no context needed
+
+output: use emoji names and render them with lucide react, it also created the dynamic icon component
