@@ -223,3 +223,17 @@ if i want to assign each group an icon or let say an emoji, what's the best opti
 context: no context needed
 
 output: use emoji names and render them with lucide react, it also created the dynamic icon component
+
+# prompt 4
+Create groups page, where users can see all the groups they are members of. Also add a button to create new groups, it should open a popup or can be full page form form where users can select group name, and a lucide icon, (add few suggestions for name like tokyo trip, house expense etc.). On the frontend just create the UI, and then create CRUD api endpoints for groups (create a group, invite someone - only owner can invite, delete a group -only owner can delete, list all groups in which user is a  member - with pagination and filter support, filter is basically whether user is owner or member) 
+
+context: model schema, theme and shadcn components
+
+output: created groups CRUD api endpoints and a basic UI, which after making some changes looks good.
+
+# prompt 5
+added proper type annotations as expected by next-openapi-gen to all api routes in order to generate openapi.json for the project.
+
+context: src/app/api directory
+
+output: nice openapi.json

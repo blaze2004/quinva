@@ -16,16 +16,17 @@ datasource db {
 }
 
 model User {
-  id            String        @id
+  id            String    @id
   name          String
   email         String
-  emailVerified Boolean       @default(false)
+  emailVerified Boolean   @default(false)
   image         String?
-  createdAt     DateTime      @default(now())
-  updatedAt     DateTime      @default(now()) @updatedAt
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @default(now()) @updatedAt
   sessions      Session[]
   accounts      Account[]
-  groups        GroupMember[]
+  expenses      Expense[]
+  goals         Goal[]
 
   username        String?
   displayUsername String?
@@ -80,38 +81,49 @@ model Verification {
   @@map("verification")
 }
 
-model Group {
-  id          String        @id @default(dbgenerated("gen_random_uuid()"))
-  name        String
-  slug        String        @unique()
-  icon        String?
-  createdAt   DateTime      @default(now()) @db.Timestamptz(6)
-  members     GroupMember[]
-  invitations Invitation[]
+enum RecurrenceType {
+  NONE
+  DAILY
+  WEEKLY
+  MONTHLY
+  YEARLY
 }
 
-enum ROLE {
-  OWNER
-  MEMBER
+model Expense {
+  id             String         @id @default(dbgenerated("gen_random_uuid()"))
+  description    String
+  amount         Decimal        @db.Decimal(10, 2) // INR amount with 2 decimal places
+  category       String
+  isRecurring    Boolean        @default(false)
+  recurrenceType RecurrenceType @default(NONE)
+  date           DateTime       @default(now())
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  goalId String?
+  goal   Goal?   @relation(fields: [goalId], references: [id], onDelete: SetNull)
+
+  @@map("expense")
 }
 
-model GroupMember {
-  id      String @id @default(dbgenerated("gen_random_uuid()"))
-  groupId String
-  group   Group  @relation(fields: [groupId], references: [id])
-  userId  String
-  user    User   @relation(fields: [userId], references: [id])
-  role    ROLE   @default(MEMBER)
+model Goal {
+  id            String    @id @default(cuid())
+  name          String
+  description   String?
+  targetAmount  Decimal   @db.Decimal(10, 2)
+  currentAmount Decimal   @default(0) @db.Decimal(10, 2) // Current saved amount
+  deadline      DateTime?
+  isCompleted   Boolean   @default(false)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
 
-  @@unique([groupId, userId])
-}
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-model Invitation {
-  id      String @id @default(dbgenerated("gen_random_uuid()"))
-  email   String
-  groupId String
-  group   Group  @relation(fields: [groupId], references: [id])
+  expenses Expense[]
 
-  createdAt DateTime @default(now()) @db.Timestamptz(6)
-  expiresAt DateTime @db.Timestamptz(6)
+  @@map("goal")
 }
