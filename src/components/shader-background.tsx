@@ -1,42 +1,15 @@
-"use client";
-
-import type React from "react";
-
-import { useEffect, useRef, useState } from "react";
 import { MeshGradient } from "@paper-design/shaders-react";
+import type React from "react";
 
 interface ShaderBackgroundProps {
   children: React.ReactNode;
 }
 
 export default function ShaderBackground({ children }: ShaderBackgroundProps) {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [isActive, setIsActive] = useState(false);
-
-  useEffect(() => {
-    const handleMouseEnter = () => setIsActive(true);
-    const handleMouseLeave = () => setIsActive(false);
-
-    const container = containerRef.current;
-    if (container) {
-      container.addEventListener("mouseenter", handleMouseEnter);
-      container.addEventListener("mouseleave", handleMouseLeave);
-    }
-
-    return () => {
-      if (container) {
-        container.removeEventListener("mouseenter", handleMouseEnter);
-        container.removeEventListener("mouseleave", handleMouseLeave);
-      }
-    };
-  }, []);
-
   return (
-    <div
-      ref={containerRef}
-      className="min-h-screen bg-black relative overflow-hidden"
-    >
+    <div className="min-h-screen bg-black relative overflow-hidden">
       <svg className="absolute inset-0 w-0 h-0">
+        <title>SVG Filters for Glassy Effects</title>
         <defs>
           <filter
             id="glass-effect"
@@ -79,14 +52,11 @@ export default function ShaderBackground({ children }: ShaderBackgroundProps) {
         className="absolute inset-0 w-full h-full"
         colors={["#1e1b2e", "#ea580c", "#f5f5f5", "#2e2a3e", "#d97706"]}
         speed={0.3}
-        // backgroundColor="#1e1b2e"
       />
       <MeshGradient
         className="absolute inset-0 w-full h-full opacity-60"
         colors={["#1e1b2e", "#f5f5f5", "#ea580c", "#1e1b2e"]}
         speed={0.2}
-        // wireframe="true"
-        // backgroundColor="transparent"
       />
 
       {children}

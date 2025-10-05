@@ -11,3 +11,6 @@ I prefer typescript as it makes dedugging easier, and tailwind is go to choice b
 
 
 Shadcn/ui is the best Ui library out there (not really a ui library though).
+
+For auth building a simple username/password login is easy but other requirements like email verification, session management, and possibly extending to add more auth options in future would become tedius, so I decided to go with betterauth, as its the most comprehensive auth system for typescript and super simple and easy to setup but highly extensible and customizable as well. (I want this project to be useful, so keeping it secure is a must.)
+
