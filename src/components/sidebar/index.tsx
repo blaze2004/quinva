@@ -1,12 +1,5 @@
 "use client";
-import {
-  ChartNoAxesGantt,
-  CircleUserRound,
-  HandCoins,
-  Home,
-  Receipt,
-  Users,
-} from "lucide-react";
+import { CircleUserRound, Home, Receipt, Target } from "lucide-react";
 import { AppSidebar, SidebarProps } from "./app-sidebar";
 
 export const sidebarData: SidebarProps = {
@@ -23,19 +16,9 @@ export const sidebarData: SidebarProps = {
       icon: Receipt,
     },
     {
-      title: "Groups",
-      url: "/groups",
-      icon: Users,
-    },
-    {
-      title: "Activity",
-      url: "/activity",
-      icon: ChartNoAxesGantt,
-    },
-    {
-      title: "Settlements",
-      url: "/settle",
-      icon: HandCoins,
+      title: "Goals",
+      url: "/goals",
+      icon: Target,
     },
     {
       title: "Profile",
