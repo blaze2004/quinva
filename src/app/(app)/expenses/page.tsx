@@ -72,7 +72,7 @@ export default function ExpensesPage() {
                       isRecurring: editingExpense.isRecurring,
                       recurrenceType: editingExpense.recurrenceType,
                       date: editingExpense.date,
-                      goalId: editingExpense.goalId || undefined,
+                      budgetId: editingExpense.budgetId || undefined,
                     }
                   : undefined
               }
