@@ -1,2 +1,9 @@
-ignoredBuiltDependencies:
+onlyBuiltDependencies:
+  - '@prisma/client'
+  - '@prisma/engines'
+  - '@tailwindcss/oxide'
   - esbuild
+  - node-pty
+  - prisma
+  - protobufjs
+  - sharp
