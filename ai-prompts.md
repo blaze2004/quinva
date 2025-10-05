@@ -1,239 +1,234 @@
-# prompt 1
+# Gemini CLI Usage
+
+This document showcases the usage of **Gemini CLI** (Google's AI) in developing the Quinva expense management application. Each prompt demonstrates how AI assisted in building various components of the application, from database schema design to email templates and API documentation.
+
+P.S: This document was formalized by gemini cli only.
+
+## Overview
+
+Quinva is a Splitwise-like application built with Next.js, Prisma, and React Email that allows users to:
+- Create and manage expenses
+- Manage budgets and track financial goals
+
+---
+
+## Prompt Session 1: Database Schema Design
+
+### Context
+- **State**: Starting with an empty Prisma schema file
+- **Goal**: Design a complete database schema for a expense-sharing application keeping it minimal
+- **Reference**: Splitwise functionality for group expense management
+
+### Prompt
+```
 create prisma schema for the application, it's like splitwise where users can create groups and manage their expenses and settle bills.
-
-## context
-empty prisma schema and project basic description
-
-## output
-prisma schema
-
-```prisma
-datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
-}
-
-generator client {
-  provider = "prisma-client-js"
-}
-
-model User {
-  id          String    @id @default(cuid())
-  email       String    @unique
-  name        String?
-  password    String
-  groups      Group[]   @relation("UserToGroup")
-  expenses    Expense[]
-  splits      ExpenseSplit[]
-  settlements Settlement[] @relation("UserSettlements")
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
-model Group {
-  id          String    @id @default(cuid())
-  name        String
-  members     User[]    @relation("UserToGroup")
-  expenses    Expense[]
-  
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
-model Expense {
-  id          String    @id @default(cuid())
-  description String
-  amount      Float
-  groupId     String
-  group       Group     @relation(fields: [groupId], references: [id])
-  paidById    String
-  paidBy      User      @relation(fields: [paidById], references: [id])
-  splits      ExpenseSplit[]
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
-model ExpenseSplit {
-  id        String  @id @default(cuid())
-  amount    Float
-  userId    String
-  user      User    @relation(fields: [userId], references: [id])
-  expenseId String
-  expense   Expense @relation(fields: [expenseId], references: [id])
-
-  @@unique([userId, expenseId])
-}
-
-model Settlement {
-  id            String   @id @default(cuid())
-  amount        Float
-  fromUserId    String
-  fromUser      User     @relation("UserSettlements", fields: [fromUserId], references: [id])
-  toUserId      String
-  toUser        User     @relation(fields: [toUserId], references: [id])
-
-  createdAt DateTime @default(now())
-}
 ```
 
+### AI Output & Changes
+The AI generated a comprehensive Prisma schema including:
+- **User model**: Authentication and profile management
+- **Group model**: Expense sharing groups with members
+- **Expense model**: Individual expense records with split logic
+- **Settlement model**: Bill settlement tracking between users
+- **Relationships**: Proper foreign keys and many-to-many relationships
 
-# prompt 2
- generate an email verification mail template using react-email and one for group invitation i.e when someone invites          you to join a group 
-context : raycast email template from react-email templates list
+**Files Created/Modified**:
+- `prisma/schema.prisma` - Complete database schema with all necessary models and relationships
 
-## output
-import { clientEnv } from "@/config/env/client";
-import {
-    Body,
-    Container,
-    Head,
-    Heading,
-    Hr,
-    Html,
-    Img,
-    Link,
-    Preview,
-    Section,
-    Text,
-} from "@react-email/components";
+**Key Features Implemented**:
+- User authentication system
+- Group membership management
+- Expense splitting logic
+- Settlement tracking
 
-interface GroupInvitationProps {
-    url: string;
-    inviterName: string;
-    groupName: string;
-}
+---
 
-const baseUrl = clientEnv.NEXT_PUBLIC_PRODUCTION_URL;
+## Prompt Session 2: Email Template Development
 
-export const GroupInvitation = ({
-    url,
-    inviterName,
-    groupName,
-}: GroupInvitationProps) => (
-    <Html>
-        <Head />
-        <Body style={main}>
-            <Preview>You've been invited to join a group!</Preview>
-            <Container style={container}>
-                <Img
-                    src={`${baseUrl}/logo.png`}
-                    width={48}
-                    height={48}
-                    alt="Quinva"
-                />
-                <Heading style={heading}>👋 You're invited!</Heading>
-                <Section style={body}>
-                    <Text style={paragraph}>
-                        {inviterName} has invited you to join the "{groupName}" group on Quinva.
-                    </Text>
-                    <Text style={paragraph}>
-                        <Link style={link} href={url}>
-                            Click here to accept the invitation
-                        </Link>
-                    </Text>
-                    <Text style={paragraph}>
-                        If you don't want to join the group, you can safely ignore this email.
-                    </Text>
-                </Section>
-                <Text style={paragraph}>
-                    Best regards,
-                    <br />- The Quinva Team
-                </Text>
-                <Hr style={hr} />
-                <Img
-                    src={`${baseUrl}/logo.png`}
-                    width={32}
-                    height={32}
-                    style={{
-                        margin: "20px 0",
-                    }}
-                />
-                <Text style={footer}>Quinva</Text>
-            </Container>
-        </Body>
-    </Html>
-);
+### Context
+- **State**: Need for user communication system
+- **Goal**: Create email templates for user verification and group invitations using react email
+- **Reference**: Raycast email template from react-email templates collection
+- **Tech Stack**: React Email library for template creation
 
-GroupInvitation.PreviewProps = {
-    url: clientEnv.NEXT_PUBLIC_PRODUCTION_URL,
-    inviterName: "John Doe",
-    groupName: "Project Quinva",
-} as GroupInvitationProps;
+### Prompt
+```
+generate mail templates using react-email for email verification and group invitation i.e when someone invites you to join a group
+```
 
-export default GroupInvitation;
+### AI Output & Changes
+The AI created professional email templates with:
 
-const main = {
-    backgroundColor: "#ffffff",
-    fontFamily:
-        '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif',
-};
+**Features**:
+- Branded header with logo
+- Clear call-to-action buttons
+- Professional styling with inline CSS
+- TypeScript interfaces for type safety
+- Preview props for development testing
 
-const container = {
-    margin: "0 auto",
-    padding: "20px 25px 48px",
-};
+**Files Created/Modified**:
+- `src/email/group-invitation.tsx` - Group invitation email template
+- `src/email/verify-email.tsx` - Email verification template
 
-const heading = {
-    fontSize: "28px",
-    fontWeight: "bold",
-    marginTop: "48px",
-};
+**Technical Implementation**:
+- Used `@react-email/components` for structure
+- Integrated with app's environment configuration
+- Mobile-responsive design
+- Accessible HTML markup
 
-const body = {
-    margin: "24px 0",
-};
+---
 
-const paragraph = {
-    fontSize: "16px",
-    lineHeight: "26px",
-};
+## Prompt Session 3: Email Theme Consistency
 
-const link = {
-    color: "#007AFF",
-};
+### Context
+- **State**: Email templates had inconsistent styling with main application
+- **Goal**: Align email templates with application's global CSS theme
+- **Challenge**: React Email doesn't share Tailwind CSS scope
 
-const hr = {
-    borderColor: "#dddddd",
-    marginTop: "48px",
-};
+### Prompt
+```
+can you make it consistent with the theme defined in globals.css without redefining colors in the email template, I know react email doesn't share the default tailwind scope but is there any other way
+```
 
-const footer = {
-    color: "#8898aa",
-    fontSize: "12px",
-    marginLeft: "4px",
-};
- and similar for verify email as well.
+### AI Output & Changes
+The AI recommended and implemented:
+- **Approach**: Create a shared theme constants file
+- **Rationale**: Better to repeat specific colors than entire theme definitions
+- **Solution**: Maintain consistency while keeping email templates standalone
 
-## Output 2
-prompt: can you make it consistent with the theme defined in globals.css without redefining colors in the email template, I   know react email doesn't share the defualt tailwind scope but is there any other way   
+**Decision Made**: Keep inline styles for emails to ensure maximum compatibility across email clients, but extract common color values to constants.
 
-output: suggested redefining thr theme in a ts file and use that, which is not a good idea, it's  better to repeat several colors than repeating whole theme definition
+---
 
-## Output 3
-prompt: create a shared layout for emails and define the theme and header, footer in there (for preview use dummy child), use the layout in verify email and group invitation email templates 
+## Prompt Session 4: Email Layout Optimization
 
-output: creted a common layout for emails and updated exisiting emails to use it.
+### Context
+- **State**: Duplicate code across email templates
+- **Goal**: Create reusable email layout component
+- **Best Practice**: DRY principle for maintainable code
 
-# prompt 3
+### Prompt
+```
+create a shared layout for emails and define the theme, header and footer in there (for preview use dummy child), use the layout in verify email and group invitation email templates
+```
 
-if i want to assign each group an icon or let say an emoji, what's the best option , storing the emoji directly in db or storing its name and rendering it  dynamically in the frontend (if second one is better also suggest any library which supports this,  i remember using fumadocs, it had a similar feature ) 
+### AI Output & Changes
+The AI created a comprehensive email system:
 
-context: no context needed
+**Email Layout Component**:
+- Common header with branding
+- Consistent footer across all emails
+- Reusable theme definitions
+- TypeScript props for customization
 
-output: use emoji names and render them with lucide react, it also created the dynamic icon component
+**Files Created/Modified**:
+- `src/email/layout.tsx` - Shared email layout component
+- Updated `src/email/verify-email.tsx` - Now uses shared layout
+- Updated `src/email/group-invitation.tsx` - Now uses shared layout
 
-# prompt 4
-Create groups page, where users can see all the groups they are members of. Also add a button to create new groups, it should open a popup or can be full page form form where users can select group name, and a lucide icon, (add few suggestions for name like tokyo trip, house expense etc.). On the frontend just create the UI, and then create CRUD api endpoints for groups (create a group, invite someone - only owner can invite, delete a group -only owner can delete, list all groups in which user is a  member - with pagination and filter support, filter is basically whether user is owner or member) 
+**Benefits Achieved**:
+- Reduced code duplication
+- Consistent branding across all emails
+- Easier maintenance and updates
+- Better type safety with TypeScript
 
-context: model schema, theme and shadcn components
+---
 
-output: created groups CRUD api endpoints and a basic UI, which after making some changes looks good.
+## Prompt Session 5: API Documentation Generation
 
-# prompt 5
-added proper type annotations as expected by next-openapi-gen to all api routes in order to generate openapi.json for the project.
+### Context
+- **State**: API routes existed but lacked proper OpenAPI documentation
+- **Goal**: Generate comprehensive API documentation
+- **Tool**: next-openapi-gen for automatic OpenAPI spec generation
+- **Target**: All API routes in `src/app/api` directory
 
-context: src/app/api directory
+### Prompt
+```
+add proper type annotations as expected by next-openapi-gen (https://github.com/tazo90/next-openapi-gen?tab=readme-ov-file) to all api routes in order to generate openapi.json for the project.
+```
 
-output: nice openapi.json
+### AI Output & Changes
+The AI enhanced all API routes with:
+
+**Type Annotations Added**:
+- Request/Response interfaces for all endpoints
+- HTTP status code definitions
+- Parameter validation schemas
+- Error response types
+
+**API Routes Enhanced**:
+- `src/app/api/auth/*` - Authentication endpoints
+- `src/app/api/budgets/*` - Budget management endpoints  
+- `src/app/api/expenses/*` - Expense tracking endpoints
+- `src/app/api/stats/*` - Analytics endpoints
+
+**Generated Output**:
+- `public/openapi.json` - Complete OpenAPI 3.0 specification
+- Automatic documentation for all endpoints
+- Type-safe API client generation capability
+
+---
+
+## Prompt Session 6: Documentation Infrastructure Fix
+
+### Context
+- **State**: OpenAPI documentation viewer had dynamic import issues
+- **Problem**: SSR conflicts with Swagger UI React components
+- **Goal**: Fix documentation rendering and provide alternative solution
+
+### Prompt
+```
+fix the issue with dynamic import (cannot use ssr false with dynamic import), the issue is with swagger react ui package
+```
+(complete error message was also attached)
+
+### AI Output & Changes
+The AI identified and resolved the issue:
+
+**Problem Analysis**:
+- Swagger React UI package incompatible with Next.js SSR
+- Dynamic imports with `ssr: false` causing build failures
+- Client-side rendering conflicts
+
+**Solution Implemented**:
+- **Alternative**: Switched from Swagger UI to ReDoc
+- **Benefits**: Better Next.js compatibility, cleaner UI, better performance
+- **Files Modified**: `src/app/api/docs/*` - Updated documentation viewer
+
+**Technical Outcome**:
+- Fully functional API documentation viewer
+- Better performance and reliability
+- Maintained all OpenAPI specification features
+
+---
+
+## Prompt Session 7: Project Documentation & Setup
+
+### Context
+- **State**: Complete application built but lacking comprehensive documentation
+- **Goal**: Create detailed README with setup instructions
+- **Scope**: Architecture overview, local development setup, deployment guide
+
+### Prompt
+```
+create the detailed readme with local instruction setup, including architectural design reference and example commands and step by step setup process
+```
+
+### AI Output & Changes
+The AI created comprehensive project documentation:
+
+**README Sections Created**:
+- Project overview and features
+- Architecture explanation
+- System requirements
+- Step-by-step local setup instructions
+- Environment configuration guide
+- Database setup and migration commands
+
+**Files Created/Modified**:
+- `README.md` - Complete project documentation
+- Added example `.env.example` configuration
+
+---
+
+There was mixed usage of gemini cli and github copilot to complete different tasks.
