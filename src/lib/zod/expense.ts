@@ -19,7 +19,7 @@ export const CreateExpenseSchema = z.object({
   isRecurring: z.boolean(),
   recurrenceType: RecurrenceTypeSchema,
   date: z.iso.datetime(),
-  goalId: z.string().optional(),
+  budgetId: z.string().optional(),
 });
 
 export const UpdateExpenseSchema = CreateExpenseSchema.partial();
@@ -29,7 +29,7 @@ export const ExpenseQuerySchema = z.object({
   cursor: z.string().optional(),
   category: z.string().optional(),
   isRecurring: z.coerce.boolean().optional(),
-  goalId: z.string().optional(),
+  budgetId: z.string().optional(),
   startDate: z.string().datetime().optional(),
   endDate: z.string().datetime().optional(),
 });
@@ -42,7 +42,7 @@ const ExpenseSchema = z.object({
   isRecurring: z.boolean(),
   recurrenceType: RecurrenceTypeSchema,
   date: z.date(),
-  goalId: z.string().nullable(),
+  budgetId: z.string().nullable(),
   userId: z.string(),
   createdAt: z.date(),
   updatedAt: z.date(),

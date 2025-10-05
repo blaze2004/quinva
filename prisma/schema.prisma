@@ -26,7 +26,7 @@ model User {
   sessions      Session[]
   accounts      Account[]
   expenses      Expense[]
-  goals         Goal[]
+  budgets       Budget[]
 
   username        String?
   displayUsername String?
@@ -103,13 +103,13 @@ model Expense {
   userId String
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  goalId String?
-  goal   Goal?   @relation(fields: [goalId], references: [id], onDelete: SetNull)
+  budgetId String?
+  budget   Budget? @relation(fields: [budgetId], references: [id], onDelete: SetNull)
 
   @@map("expense")
 }
 
-model Goal {
+model Budget {
   id            String    @id @default(cuid())
   name          String
   description   String?
@@ -125,5 +125,5 @@ model Goal {
 
   expenses Expense[]
 
-  @@map("goal")
+  @@map("budget")
 }

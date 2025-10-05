@@ -16,8 +16,8 @@ export const sidebarData: SidebarProps = {
       icon: Receipt,
     },
     {
-      title: "Goals",
-      url: "/goals",
+      title: "Budgets",
+      url: "/budgets",
       icon: Target,
     },
     {

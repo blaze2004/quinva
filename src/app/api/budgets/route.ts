@@ -1,34 +1,34 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import prisma from "@/lib/prisma";
-import { CreateGoalSchema, GoalQuerySchema } from "@/lib/zod/goal";
+import { CreateBudgetSchema, BudgetQuerySchema } from "@/lib/zod/budget";
 import { Decimal } from "@prisma/client/runtime/library";
-import { Goal } from "@/generated/prisma";
+import { Budget } from "@/generated/prisma";
 
-export function calculateGoalMetrics(goal: Partial<Goal>) {
-  const targetAmount = Number(goal.targetAmount);
-  const currentAmount = Number(goal.currentAmount);
+export function calculateBudgetMetrics(budget: Partial<Budget>) {
+  const targetAmount = Number(budget.targetAmount);
+  const currentAmount = Number(budget.currentAmount);
 
-  const progressPercentage =
+  const spentPercentage =
     targetAmount > 0 ? Math.min((currentAmount / targetAmount) * 100, 100) : 0;
   const remainingAmount = Math.max(targetAmount - currentAmount, 0);
 
   let daysRemaining = null;
   let isOverdue = false;
 
-  if (goal.deadline) {
+  if (budget.deadline) {
     const now = new Date();
-    const deadline = new Date(goal.deadline);
+    const deadline = new Date(budget.deadline);
     const diffTime = deadline.getTime() - now.getTime();
     daysRemaining = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
     isOverdue = daysRemaining < 0;
   }
 
   return {
-    ...goal,
+    ...budget,
     targetAmount,
     currentAmount,
-    progressPercentage: Math.round(progressPercentage * 100) / 100,
+    spentPercentage: Math.round(spentPercentage * 100) / 100,
     remainingAmount,
     daysRemaining,
     isOverdue,
@@ -36,8 +36,8 @@ export function calculateGoalMetrics(goal: Partial<Goal>) {
 }
 
 /**
- * Get user goals with filtering and pagination
- * @description Retrieve a paginated list of goals for the authenticated user with optional filtering
+ * Get user budgets with filtering and pagination
+ * @description Retrieve a paginated list of budgets for the authenticated user with optional filtering
  * @openapi
  */
 export async function GET(request: NextRequest) {
@@ -58,7 +58,7 @@ export async function GET(request: NextRequest) {
     );
 
     const { data: validatedQuery, success } =
-      GoalQuerySchema.safeParse(queryParams);
+      BudgetQuerySchema.safeParse(queryParams);
 
     if (!success) {
       return NextResponse.json(
@@ -84,12 +84,12 @@ export async function GET(request: NextRequest) {
       }
     }
 
-    const total = await prisma.goal.count({ where });
+    const total = await prisma.budget.count({ where });
 
     const totalPages = Math.ceil(total / limit);
     const skip = (page - 1) * limit;
 
-    const goals = await prisma.goal.findMany({
+    const budgets = await prisma.budget.findMany({
       where,
       include: {
         expenses: {
@@ -103,21 +103,21 @@ export async function GET(request: NextRequest) {
       take: limit,
     });
 
-    const goalsWithMetrics = goals.map((goal) => {
-      const expenseSum = goal.expenses.reduce((sum, expense) => {
+    const budgetsWithMetrics = budgets.map((budget) => {
+      const expenseSum = budget.expenses.reduce((sum, expense) => {
         return sum + Number(expense.amount);
       }, 0);
 
-      const goalWithCurrentAmount = {
-        ...goal,
+      const budgetWithCurrentAmount = {
+        ...budget,
         currentAmount: Decimal(expenseSum),
       };
 
-      return calculateGoalMetrics(goalWithCurrentAmount);
+      return calculateBudgetMetrics(budgetWithCurrentAmount);
     });
 
     const response = {
-      goals: goalsWithMetrics,
+      budgets: budgetsWithMetrics,
       pagination: {
         page,
         limit,
@@ -130,7 +130,7 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json(response);
   } catch (error) {
-    console.error("Error fetching goals:", error);
+    console.error("Error fetching budgets:", error);
 
     if (error instanceof Error && error.name === "ZodError") {
       return NextResponse.json(
@@ -147,8 +147,8 @@ export async function GET(request: NextRequest) {
 }
 
 /**
- * Create a new goal
- * @description Create a new goal for the authenticated user
+ * Create a new budget
+ * @description Create a new budget for the authenticated user
  * @openapi
  */
 export async function POST(request: NextRequest) {
@@ -165,7 +165,7 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json();
-    const validatedData = CreateGoalSchema.safeParse(body);
+    const validatedData = CreateBudgetSchema.safeParse(body);
 
     if (!validatedData.success) {
       return NextResponse.json(
@@ -174,7 +174,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const goal = await prisma.goal.create({
+    const budget = await prisma.budget.create({
       data: {
         ...validatedData.data,
         targetAmount: new Decimal(validatedData.data.targetAmount),
@@ -192,11 +192,11 @@ export async function POST(request: NextRequest) {
       },
     });
 
-    const goalWithMetrics = calculateGoalMetrics(goal);
+    const budgetWithMetrics = calculateBudgetMetrics(budget);
 
-    return NextResponse.json(goalWithMetrics, { status: 201 });
+    return NextResponse.json(budgetWithMetrics, { status: 201 });
   } catch (error) {
-    console.error("Error creating goal:", error);
+    console.error("Error creating budget:", error);
 
     return NextResponse.json(
       { error: "Internal server error", code: "INTERNAL_ERROR" },

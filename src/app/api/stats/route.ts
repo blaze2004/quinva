@@ -4,7 +4,7 @@ import prisma from "@/lib/prisma";
 
 /**
  * Get dashboard statistics
- * @description Retrieve overview statistics for expenses and goals
+ * @description Retrieve overview statistics for expenses and budgets
  * @openapi
  */
 
@@ -71,8 +71,8 @@ export async function GET(request: NextRequest) {
       }),
     ]);
 
-    const [goals, totalGoals, completedGoals] = await Promise.all([
-      prisma.goal.findMany({
+    const [budgets, totalBudgets, completedBudgets] = await Promise.all([
+      prisma.budget.findMany({
         where: { userId },
         include: {
           expenses: {
@@ -81,9 +81,9 @@ export async function GET(request: NextRequest) {
         },
       }),
 
-      prisma.goal.count({ where: { userId } }),
+      prisma.budget.count({ where: { userId } }),
 
-      prisma.goal.count({
+      prisma.budget.count({
         where: {
           userId,
           isCompleted: true,
@@ -95,9 +95,9 @@ export async function GET(request: NextRequest) {
     let totalCurrentAmount = 0;
     let totalProgress = 0;
 
-    goals.forEach((goal) => {
-      const targetAmount = Number(goal.targetAmount);
-      const currentAmount = goal.expenses.reduce((sum, expense) => {
+    budgets.forEach((budget) => {
+      const targetAmount = Number(budget.targetAmount);
+      const currentAmount = budget.expenses.reduce((sum, expense) => {
         return sum + Number(expense.amount);
       }, 0);
 
@@ -110,7 +110,7 @@ export async function GET(request: NextRequest) {
       }
     });
 
-    const averageProgress = totalGoals > 0 ? totalProgress / totalGoals : 0;
+    const averageProgress = totalBudgets > 0 ? totalProgress / totalBudgets : 0;
 
     const response = {
       expenses: {
@@ -124,9 +124,9 @@ export async function GET(request: NextRequest) {
           count: item._count.id,
         })),
       },
-      goals: {
-        total: totalGoals,
-        completed: completedGoals,
+      budgets: {
+        total: totalBudgets,
+        completed: completedBudgets,
         totalTargetAmount,
         totalCurrentAmount,
         averageProgress: Math.round(averageProgress * 100) / 100,

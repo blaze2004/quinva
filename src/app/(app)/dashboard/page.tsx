@@ -28,7 +28,7 @@ interface DashboardStats {
       count: number;
     }>;
   };
-  goals: {
+  budgets: {
     total: number;
     completed: number;
     totalTargetAmount: number;
@@ -101,7 +101,7 @@ export default function DashboardPage() {
         <div>
           <h1 className="text-3xl font-bold">Dashboard</h1>
           <p className="text-muted-foreground mt-2">
-            Overview of your expenses and goals
+            Overview of your expenses and budgets
           </p>
         </div>
 
@@ -137,7 +137,7 @@ export default function DashboardPage() {
       <div>
         <h1 className="text-3xl font-bold">Dashboard</h1>
         <p className="text-muted-foreground mt-2">
-          Overview of your expenses and goals
+          Overview of your expenses and budgets
         </p>
       </div>
 
@@ -188,31 +188,31 @@ export default function DashboardPage() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">
-              Goals Progress
+              Budgets Progress
             </CardTitle>
             <Target className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
-              {stats.goals.averageProgress.toFixed(1)}%
+              {stats.budgets.averageProgress.toFixed(1)}%
             </div>
             <p className="text-xs text-muted-foreground">
-              {stats.goals.completed}/{stats.goals.total} completed
+              {stats.budgets.completed}/{stats.budgets.total} completed
             </p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Goals Savings</CardTitle>
+            <CardTitle className="text-sm font-medium">Budget Spending</CardTitle>
             <Trophy className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
-              {formatCurrency(stats.goals.totalCurrentAmount)}
+              {formatCurrency(stats.budgets.totalCurrentAmount)}
             </div>
             <p className="text-xs text-muted-foreground">
-              of {formatCurrency(stats.goals.totalTargetAmount)} target
+              of {formatCurrency(stats.budgets.totalTargetAmount)} target
             </p>
           </CardContent>
         </Card>
@@ -275,23 +275,23 @@ export default function DashboardPage() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Target className="h-5 w-5" />
-              Goals Overview
+              Budgets Overview
             </CardTitle>
           </CardHeader>
           <CardContent>
-            {stats.goals.total === 0 ? (
-              <div className="text-center py-8 text-muted-foreground">
-                No goals created yet
-              </div>
+            {stats.budgets.total === 0 ? (
+              <p className="text-muted-foreground text-center py-8">
+                No budgets created yet
+              </p>
             ) : (
               <div className="space-y-6">
                 <div className="text-center">
                   <div className="text-3xl font-bold mb-2">
-                    {stats.goals.averageProgress.toFixed(1)}%
+                    {stats.budgets.averageProgress.toFixed(1)}%
                   </div>
                   <p className="text-muted-foreground">Average Progress</p>
                   <Progress
-                    value={stats.goals.averageProgress}
+                    value={stats.budgets.averageProgress}
                     className="mt-3"
                   />
                 </div>
@@ -299,13 +299,13 @@ export default function DashboardPage() {
                 <div className="grid grid-cols-2 gap-4">
                   <div className="text-center p-4 border rounded-lg">
                     <div className="text-2xl font-bold text-green-600">
-                      {stats.goals.completed}
+                      {stats.budgets.completed}
                     </div>
                     <p className="text-sm text-muted-foreground">Completed</p>
                   </div>
                   <div className="text-center p-4 border rounded-lg">
                     <div className="text-2xl font-bold text-blue-600">
-                      {stats.goals.total - stats.goals.completed}
+                      {stats.budgets.total - stats.budgets.completed}
                     </div>
                     <p className="text-sm text-muted-foreground">In Progress</p>
                   </div>
@@ -317,7 +317,7 @@ export default function DashboardPage() {
                       Total Saved
                     </span>
                     <span className="text-sm font-medium">
-                      {formatCurrency(stats.goals.totalCurrentAmount)}
+                      {formatCurrency(stats.budgets.totalCurrentAmount)}
                     </span>
                   </div>
                   <div className="flex justify-between">
@@ -325,7 +325,7 @@ export default function DashboardPage() {
                       Total Target
                     </span>
                     <span className="text-sm font-medium">
-                      {formatCurrency(stats.goals.totalTargetAmount)}
+                      {formatCurrency(stats.budgets.totalTargetAmount)}
                     </span>
                   </div>
                   <div className="flex justify-between">
@@ -334,8 +334,8 @@ export default function DashboardPage() {
                     </span>
                     <span className="text-sm font-medium">
                       {formatCurrency(
-                        stats.goals.totalTargetAmount -
-                          stats.goals.totalCurrentAmount
+                        stats.budgets.totalTargetAmount -
+                          stats.budgets.totalCurrentAmount
                       )}
                     </span>
                   </div>
@@ -345,28 +345,6 @@ export default function DashboardPage() {
           </CardContent>
         </Card>
       </div>
-
-      <Card>
-        <CardHeader>
-          <CardTitle>Quick Actions</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="flex flex-wrap gap-2">
-            <Badge variant="outline" className="cursor-pointer hover:bg-muted">
-              Add Expense
-            </Badge>
-            <Badge variant="outline" className="cursor-pointer hover:bg-muted">
-              Create Goal
-            </Badge>
-            <Badge variant="outline" className="cursor-pointer hover:bg-muted">
-              View Reports
-            </Badge>
-            <Badge variant="outline" className="cursor-pointer hover:bg-muted">
-              Export Data
-            </Badge>
-          </div>
-        </CardContent>
-      </Card>
     </div>
   );
 }

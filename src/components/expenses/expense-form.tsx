@@ -41,7 +41,7 @@ interface ExpenseFormProps {
     isRecurring: boolean;
     recurrenceType: RecurrenceType;
     date: Date | string;
-    goalId?: string;
+    budgetId?: string;
   };
   isEditing?: boolean;
   expenseId?: string;
@@ -67,7 +67,7 @@ export default function ExpenseForm({
       date: initialData?.date
         ? new Date(initialData.date).toISOString()
         : new Date().toISOString(),
-      goalId: initialData?.goalId || undefined,
+      budgetId: initialData?.budgetId || undefined,
     },
   });
 
@@ -291,10 +291,10 @@ export default function ExpenseForm({
 
             <FormField
               control={form.control}
-              name="goalId"
+              name="budgetId"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Link to Goal (Optional)</FormLabel>
+                  <FormLabel>Link to Budget (Optional)</FormLabel>
                   <Select
                     onValueChange={(value) =>
                       field.onChange(value === "none" ? undefined : value)

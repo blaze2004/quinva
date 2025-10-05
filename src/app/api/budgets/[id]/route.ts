@@ -1,13 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import prisma from "@/lib/prisma";
-import { UpdateGoalSchema } from "@/lib/zod/goal";
+import { UpdateBudgetSchema } from "@/lib/zod/budget";
 import { Decimal } from "@prisma/client/runtime/library";
-import { calculateGoalMetrics } from "../route";
+import { calculateBudgetMetrics } from "../route";
 
 /**
- * Get goal by ID
- * @description Retrieve a specific goal by its ID with associated expenses
+ * Get budget by ID
+ * @description Retrieve a specific budget by its ID with associated expenses
  * @openapi
  */
 export async function GET(
@@ -28,7 +28,7 @@ export async function GET(
 
     const { id } = await params;
 
-    const goal = await prisma.goal.findFirst({
+    const budget = await prisma.budget.findFirst({
       where: {
         id,
         userId: session.user.id,
@@ -49,31 +49,31 @@ export async function GET(
       },
     });
 
-    if (!goal) {
+    if (!budget) {
       return NextResponse.json(
-        { error: "Goal not found", code: "NOT_FOUND" },
+        { error: "Budget not found", code: "NOT_FOUND" },
         { status: 404 }
       );
     }
 
-    const expenseSum = goal.expenses.reduce((sum, expense) => {
+    const expenseSum = budget.expenses.reduce((sum, expense) => {
       return sum + Number(expense.amount);
     }, 0);
 
-    const goalWithCurrentAmount = {
-      ...goal,
+    const budgetWithCurrentAmount = {
+      ...budget,
       currentAmount: Decimal(expenseSum),
-      expenses: goal.expenses.map((expense) => ({
+      expenses: budget.expenses.map((expense) => ({
         ...expense,
         amount: Number(expense.amount),
       })),
     };
 
-    const goalWithMetrics = calculateGoalMetrics(goalWithCurrentAmount);
+    const budgetWithMetrics = calculateBudgetMetrics(budgetWithCurrentAmount);
 
-    return NextResponse.json(goalWithMetrics);
+    return NextResponse.json(budgetWithMetrics);
   } catch (error) {
-    console.error("Error fetching goal:", error);
+    console.error("Error fetching budget:", error);
     return NextResponse.json(
       { error: "Internal server error", code: "INTERNAL_ERROR" },
       { status: 500 }
@@ -82,8 +82,8 @@ export async function GET(
 }
 
 /**
- * Update goal by id
- * @description Update a specific goal by its ID
+ * Update budget by id
+ * @description Update a specific budget by its ID
  * @openapi
  */
 export async function PUT(
@@ -104,22 +104,22 @@ export async function PUT(
 
     const { id } = await params;
 
-    const existingGoal = await prisma.goal.findFirst({
+    const existingBudget = await prisma.budget.findFirst({
       where: {
         id,
         userId: session.user.id,
       },
     });
 
-    if (!existingGoal) {
+    if (!existingBudget) {
       return NextResponse.json(
-        { error: "Goal not found", code: "NOT_FOUND" },
+        { error: "Budget not found", code: "NOT_FOUND" },
         { status: 404 }
       );
     }
 
     const body = await request.json();
-    const { data: validatedData, success } = UpdateGoalSchema.safeParse(body);
+    const { data: validatedData, success } = UpdateBudgetSchema.safeParse(body);
 
     if (!success) {
       return NextResponse.json(
@@ -140,7 +140,7 @@ export async function PUT(
         : null;
     }
 
-    const updatedGoal = await prisma.goal.update({
+    const updatedBudget = await prisma.budget.update({
       where: { id },
       data: updateData,
       include: {
@@ -152,20 +152,20 @@ export async function PUT(
       },
     });
 
-    const expenseSum = updatedGoal.expenses.reduce((sum, expense) => {
+    const expenseSum = updatedBudget.expenses.reduce((sum, expense) => {
       return sum + Number(expense.amount);
     }, 0);
 
-    const goalWithCurrentAmount = {
-      ...updatedGoal,
+    const budgetWithCurrentAmount = {
+      ...updatedBudget,
       currentAmount: Decimal(expenseSum),
     };
 
-    const goalWithMetrics = calculateGoalMetrics(goalWithCurrentAmount);
+    const budgetWithMetrics = calculateBudgetMetrics(budgetWithCurrentAmount);
 
-    return NextResponse.json(goalWithMetrics);
+    return NextResponse.json(budgetWithMetrics);
   } catch (error) {
-    console.error("Error updating goal:", error);
+    console.error("Error updating budget:", error);
 
     return NextResponse.json(
       { error: "Internal server error", code: "INTERNAL_ERROR" },
@@ -175,8 +175,8 @@ export async function PUT(
 }
 
 /**
- * Delete a specific goal by its ID
- * @description Delete a specific goal by its ID
+ * Delete a specific budget by its ID
+ * @description Delete a specific budget by its ID
  * @openapi
  */
 export async function DELETE(
@@ -197,29 +197,29 @@ export async function DELETE(
 
     const { id } = await params;
 
-    const existingGoal = await prisma.goal.findFirst({
+    const existingBudget = await prisma.budget.findFirst({
       where: {
         id,
         userId: session.user.id,
       },
     });
 
-    if (!existingGoal) {
+    if (!existingBudget) {
       return NextResponse.json(
-        { error: "Goal not found", code: "NOT_FOUND" },
+        { error: "Budget not found", code: "NOT_FOUND" },
         { status: 404 }
       );
     }
 
-    await prisma.goal.delete({
+    await prisma.budget.delete({
       where: { id },
     });
 
     return NextResponse.json({
-      message: "Goal deleted successfully",
+      message: "Budget deleted successfully",
     });
   } catch (error) {
-    console.error("Error deleting goal:", error);
+    console.error("Error deleting budget:", error);
     return NextResponse.json(
       { error: "Internal server error", code: "INTERNAL_ERROR" },
       { status: 500 }

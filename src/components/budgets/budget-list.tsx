@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Goal, GoalListResponse } from "@/lib/zod/goal";
+import { Budget, BudgetListResponse } from "@/lib/zod/budget";
 import { Button } from "@/components/ui/button";
 import {
   Select,
@@ -28,8 +28,8 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 
-interface GoalListProps {
-  onEditGoal?: (goal: Goal) => void;
+interface BudgetListProps {
+  onEditBudget?: (budget: Budget) => void;
   refreshTrigger?: number;
 }
 
@@ -38,11 +38,11 @@ interface Filters {
   hasDeadline: string;
 }
 
-export default function GoalList({
-  onEditGoal,
+export default function BudgetList({
+  onEditBudget,
   refreshTrigger,
-}: GoalListProps) {
-  const [goals, setGoals] = useState<GoalListResponse | null>(null);
+}: BudgetListProps) {
+  const [budgets, setBudgets] = useState<BudgetListResponse | null>(null);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [showFilters, setShowFilters] = useState(false);
@@ -51,7 +51,7 @@ export default function GoalList({
     hasDeadline: "all",
   });
 
-  const fetchGoals = async (page = 1, currentFilters = filters) => {
+  const fetchBudgets = async (page = 1, currentFilters = filters) => {
     try {
       setLoading(true);
 
@@ -65,69 +65,45 @@ export default function GoalList({
       if (currentFilters.hasDeadline && currentFilters.hasDeadline !== "all")
         params.append("hasDeadline", currentFilters.hasDeadline);
 
-      const response = await fetch(`/api/goals?${params.toString()}`);
+      const response = await fetch(`/api/budgets?${params.toString()}`);
 
       if (!response.ok) {
-        throw new Error("Failed to fetch goals");
+        throw new Error("Failed to fetch budgets");
       }
 
-      const data: GoalListResponse = await response.json();
-      setGoals(data);
+      const data: BudgetListResponse = await response.json();
+      setBudgets(data);
       setCurrentPage(page);
     } catch (error) {
-      console.error("Error fetching goals:", error);
-      toast.error("Failed to fetch goals");
+      console.error("Error fetching budgets:", error);
+      toast.error("Failed to fetch budgets");
     } finally {
       setLoading(false);
     }
   };
 
-  const handleDeleteGoal = async (id: string) => {
+  const handleDeleteBudget = async (id: string) => {
     if (
       !confirm(
-        "Are you sure you want to delete this goal? Associated expenses will be unlinked."
+        "Are you sure you want to delete this budget? Associated expenses will be unlinked."
       )
     )
       return;
 
     try {
-      const response = await fetch(`/api/goals/${id}`, {
+      const response = await fetch(`/api/budgets/${id}`, {
         method: "DELETE",
       });
 
       if (!response.ok) {
-        throw new Error("Failed to delete goal");
+        throw new Error("Failed to delete budget");
       }
 
-      toast.success("Goal deleted successfully");
-      await fetchGoals(currentPage);
+      toast.success("Budget deleted successfully");
+      await fetchBudgets(currentPage);
     } catch (error) {
-      console.error("Error deleting goal:", error);
-      toast.error("Failed to delete goal");
-    }
-  };
-
-  const handleToggleComplete = async (id: string, currentStatus: boolean) => {
-    try {
-      const response = await fetch(`/api/goals/${id}/complete`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ isCompleted: !currentStatus }),
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to update goal");
-      }
-
-      toast.success(
-        `Goal marked as ${!currentStatus ? "completed" : "incomplete"}`
-      );
-      await fetchGoals(currentPage);
-    } catch (error) {
-      console.error("Error updating goal:", error);
-      toast.error("Failed to update goal");
+      console.error("Error deleting budget:", error);
+      toast.error("Failed to delete budget");
     }
   };
 
@@ -138,7 +114,7 @@ export default function GoalList({
 
   const applyFilters = () => {
     setCurrentPage(1);
-    fetchGoals(1, filters);
+    fetchBudgets(1, filters);
   };
 
   const clearFilters = () => {
@@ -148,7 +124,7 @@ export default function GoalList({
     };
     setFilters(emptyFilters);
     setCurrentPage(1);
-    fetchGoals(1, emptyFilters);
+    fetchBudgets(1, emptyFilters);
   };
 
   const formatCurrency = (amount: number) => {
@@ -167,14 +143,14 @@ export default function GoalList({
   };
 
   useEffect(() => {
-    fetchGoals();
+    fetchBudgets();
   }, [refreshTrigger]);
 
   if (loading) {
     return (
       <Card>
         <CardHeader>
-          <CardTitle>Goals</CardTitle>
+          <CardTitle>Budgets</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           {[...Array(5)].map((_, i) => (
@@ -185,11 +161,11 @@ export default function GoalList({
     );
   }
 
-  if (!goals) {
+  if (!budgets) {
     return (
       <Card>
         <CardContent className="py-8 text-center">
-          <p className="text-muted-foreground">Failed to load goals</p>
+          <p className="text-muted-foreground">Failed to load budgets</p>
         </CardContent>
       </Card>
     );
@@ -199,7 +175,7 @@ export default function GoalList({
     <Card>
       <CardHeader>
         <div className="flex justify-between items-center">
-          <CardTitle>Goals</CardTitle>
+          <CardTitle>Budgets</CardTitle>
           <Button
             variant="outline"
             size="sm"
@@ -240,10 +216,10 @@ export default function GoalList({
                 }
               >
                 <SelectTrigger>
-                  <SelectValue placeholder="All goals" />
+                  <SelectValue placeholder="All budgets" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="all">All goals</SelectItem>
+                  <SelectItem value="all">All budgets</SelectItem>
                   <SelectItem value="true">With deadline</SelectItem>
                   <SelectItem value="false">No deadline</SelectItem>
                 </SelectContent>
@@ -264,41 +240,41 @@ export default function GoalList({
       </CardHeader>
 
       <CardContent>
-        {goals.goals.length === 0 ? (
+        {budgets.budgets.length === 0 ? (
           <div className="text-center py-8">
             <Target className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
-            <p className="text-muted-foreground">No goals found</p>
+            <p className="text-muted-foreground">No budgets found</p>
             <p className="text-sm text-muted-foreground mt-1">
-              Create your first goal to start tracking your savings!
+              Create your first budget to start tracking your expenses!
             </p>
           </div>
         ) : (
           <div className="space-y-6">
-            {goals.goals.map((goal) => (
+            {budgets.budgets.map((budget) => (
               <div
-                key={goal.id}
+                key={budget.id}
                 className="border rounded-lg p-6 hover:bg-muted/50 transition-colors"
               >
                 <div className="flex items-start justify-between mb-4">
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-2">
-                      <h3 className="font-semibold text-lg">{goal.name}</h3>
-                      {goal.isCompleted && (
+                      <h3 className="font-semibold text-lg">{budget.name}</h3>
+                      {budget.isCompleted && (
                         <Badge variant="default" className="bg-green-500">
                           <CheckCircle className="h-3 w-3 mr-1" />
                           Completed
                         </Badge>
                       )}
-                      {goal.isOverdue && !goal.isCompleted && (
+                      {budget.isOverdue && !budget.isCompleted && (
                         <Badge variant="destructive">
                           <AlertTriangle className="h-3 w-3 mr-1" />
                           Overdue
                         </Badge>
                       )}
                     </div>
-                    {goal.description && (
+                    {budget.description && (
                       <p className="text-sm text-muted-foreground mb-3">
-                        {goal.description}
+                        {budget.description}
                       </p>
                     )}
                   </div>
@@ -307,23 +283,14 @@ export default function GoalList({
                     <Button
                       variant="outline"
                       size="sm"
-                      onClick={() =>
-                        handleToggleComplete(goal.id, goal.isCompleted)
-                      }
-                    >
-                      <CheckCircle className="h-4 w-4" />
-                    </Button>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => onEditGoal?.(goal)}
+                      onClick={() => onEditBudget?.(budget)}
                     >
                       <Edit className="h-4 w-4" />
                     </Button>
                     <Button
                       variant="outline"
                       size="sm"
-                      onClick={() => handleDeleteGoal(goal.id)}
+                      onClick={() => handleDeleteBudget(budget.id)}
                     >
                       <Trash2 className="h-4 w-4" />
                     </Button>
@@ -332,46 +299,43 @@ export default function GoalList({
 
                 <div className="space-y-3">
                   <div className="flex justify-between text-sm">
-                    <span>Progress</span>
+                    <span>Spent</span>
                     <span className="font-medium">
-                      {goal.progressPercentage.toFixed(1)}%
+                      {budget.spentPercentage.toFixed(1)}%
                     </span>
                   </div>
-                  <Progress
-                    value={goal.progressPercentage}
-                    className="w-full"
-                  />
+                  <Progress value={budget.spentPercentage} className="w-full" />
 
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
                     <div>
-                      <p className="text-muted-foreground">Current Amount</p>
+                      <p className="text-muted-foreground">Amount Spent</p>
                       <p className="font-medium">
-                        {formatCurrency(goal.currentAmount)}
+                        {formatCurrency(budget.currentAmount)}
                       </p>
                     </div>
                     <div>
-                      <p className="text-muted-foreground">Target Amount</p>
+                      <p className="text-muted-foreground">Budget Limit</p>
                       <p className="font-medium">
-                        {formatCurrency(goal.targetAmount)}
+                        {formatCurrency(budget.targetAmount)}
                       </p>
                     </div>
                     <div>
                       <p className="text-muted-foreground">Remaining</p>
                       <p className="font-medium">
-                        {formatCurrency(goal.remainingAmount)}
+                        {formatCurrency(budget.remainingAmount)}
                       </p>
                     </div>
-                    {goal.deadline && (
+                    {budget.deadline && (
                       <div>
                         <p className="text-muted-foreground flex items-center gap-1">
                           <Calendar className="h-3 w-3" />
-                          {goal.daysRemaining !== null &&
-                          goal.daysRemaining >= 0
-                            ? `${goal.daysRemaining} days left`
+                          {budget.daysRemaining !== null &&
+                          budget.daysRemaining >= 0
+                            ? `${budget.daysRemaining} days left`
                             : "Deadline"}
                         </p>
                         <p className="font-medium">
-                          {formatDate(goal.deadline)}
+                          {formatDate(budget.deadline)}
                         </p>
                       </div>
                     )}
@@ -382,38 +346,39 @@ export default function GoalList({
           </div>
         )}
 
-        {goals.pagination.totalPages > 1 && (
+        {budgets.pagination.totalPages > 1 && (
           <div className="flex items-center justify-between mt-6">
             <p className="text-sm text-muted-foreground">
-              Showing {(goals.pagination.page - 1) * goals.pagination.limit + 1}{" "}
-              to{" "}
+              Showing{" "}
+              {(budgets.pagination.page - 1) * budgets.pagination.limit + 1} to{" "}
               {Math.min(
-                goals.pagination.page * goals.pagination.limit,
-                goals.pagination.total
+                budgets.pagination.page * budgets.pagination.limit,
+                budgets.pagination.total
               )}{" "}
-              of {goals.pagination.total} goals
+              of {budgets.pagination.total} budgets
             </p>
 
             <div className="flex gap-2">
               <Button
                 variant="outline"
                 size="sm"
-                onClick={() => fetchGoals(currentPage - 1)}
-                disabled={!goals.pagination.hasPrev}
+                onClick={() => fetchBudgets(currentPage - 1)}
+                disabled={!budgets.pagination.hasPrev}
               >
                 <ChevronLeft className="h-4 w-4" />
                 Previous
               </Button>
 
               <span className="flex items-center px-3 text-sm">
-                Page {goals.pagination.page} of {goals.pagination.totalPages}
+                Page {budgets.pagination.page} of{" "}
+                {budgets.pagination.totalPages}
               </span>
 
               <Button
                 variant="outline"
                 size="sm"
-                onClick={() => fetchGoals(currentPage + 1)}
-                disabled={!goals.pagination.hasNext}
+                onClick={() => fetchBudgets(currentPage + 1)}
+                disabled={!budgets.pagination.hasNext}
               >
                 Next
                 <ChevronRight className="h-4 w-4" />

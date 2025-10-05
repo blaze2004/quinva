@@ -39,8 +39,15 @@ export async function GET(request: NextRequest) {
         { status: 400 }
       );
     }
-    const { limit, cursor, category, isRecurring, goalId, startDate, endDate } =
-      validatedQuery;
+    const {
+      limit,
+      cursor,
+      category,
+      isRecurring,
+      budgetId,
+      startDate,
+      endDate,
+    } = validatedQuery;
 
     const where: any = {
       userId: session.user.id,
@@ -57,8 +64,8 @@ export async function GET(request: NextRequest) {
       where.isRecurring = isRecurring;
     }
 
-    if (goalId) {
-      where.goalId = goalId;
+    if (budgetId) {
+      where.budgetId = budgetId;
     }
 
     if (startDate || endDate) {

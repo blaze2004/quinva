@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { CreateGoalSchema } from "@/lib/zod/goal";
+import { CreateBudgetSchema } from "@/lib/zod/budget";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -19,9 +19,9 @@ import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import { z } from "zod";
 
-type CreateGoalFormData = z.infer<typeof CreateGoalSchema>;
+type CreateBudgetFormData = z.infer<typeof CreateBudgetSchema>;
 
-interface GoalFormProps {
+interface BudgetFormProps {
   onSuccess?: () => void;
   initialData?: {
     name: string;
@@ -30,19 +30,19 @@ interface GoalFormProps {
     deadline?: Date | string;
   };
   isEditing?: boolean;
-  goalId?: string;
+  budgetId?: string;
 }
 
-export default function GoalForm({
+export default function BudgetForm({
   onSuccess,
   initialData,
   isEditing = false,
-  goalId,
-}: GoalFormProps) {
+  budgetId,
+}: BudgetFormProps) {
   const [isLoading, setIsLoading] = useState(false);
 
-  const form = useForm<CreateGoalFormData>({
-    resolver: zodResolver(CreateGoalSchema),
+  const form = useForm<CreateBudgetFormData>({
+    resolver: zodResolver(CreateBudgetSchema),
     defaultValues: {
       name: initialData?.name || "",
       description: initialData?.description || "",
@@ -53,11 +53,11 @@ export default function GoalForm({
     },
   });
 
-  const onSubmit = async (data: CreateGoalFormData) => {
+  const onSubmit = async (data: CreateBudgetFormData) => {
     try {
       setIsLoading(true);
 
-      const url = isEditing ? `/api/goals/${goalId}` : "/api/goals";
+      const url = isEditing ? `/api/budgets/${budgetId}` : "/api/budgets";
       const method = isEditing ? "PUT" : "POST";
 
       const response = await fetch(url, {
@@ -71,19 +71,22 @@ export default function GoalForm({
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(
-          errorData.error || `Failed to ${isEditing ? "update" : "create"} goal`
+          errorData.error ||
+            `Failed to ${isEditing ? "update" : "create"} budget`
         );
       }
 
-      toast.success(`Goal ${isEditing ? "updated" : "created"} successfully!`);
+      toast.success(
+        `Budget ${isEditing ? "updated" : "created"} successfully!`
+      );
       form.reset();
       onSuccess?.();
     } catch (error) {
-      console.error("Error saving goal:", error);
+      console.error("Error saving budget:", error);
       toast.error(
         error instanceof Error
           ? error.message
-          : `Failed to ${isEditing ? "update" : "create"} goal`
+          : `Failed to ${isEditing ? "update" : "create"} budget`
       );
     } finally {
       setIsLoading(false);
@@ -93,7 +96,7 @@ export default function GoalForm({
   return (
     <Card className="w-full max-w-2xl border-none">
       <CardHeader>
-        <CardTitle>{isEditing ? "Edit Goal" : "Create New Goal"}</CardTitle>
+        <CardTitle>{isEditing ? "Edit Budget" : "Create New Budget"}</CardTitle>
       </CardHeader>
       <CardContent>
         <Form {...form}>
@@ -103,10 +106,10 @@ export default function GoalForm({
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Goal Name</FormLabel>
+                  <FormLabel>Budget Name</FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="Enter goal name (e.g., Emergency Fund, Vacation)"
+                      placeholder="Enter budget name (e.g., Monthly Expenses, Travel Fund)"
                       {...field}
                     />
                   </FormControl>
@@ -123,7 +126,7 @@ export default function GoalForm({
                   <FormLabel>Description (Optional)</FormLabel>
                   <FormControl>
                     <Textarea
-                      placeholder="Add more details about your goal..."
+                      placeholder="Add more details about your budget..."
                       className="min-h-[80px]"
                       {...field}
                     />
@@ -190,8 +193,8 @@ export default function GoalForm({
                 {isLoading
                   ? "Saving..."
                   : isEditing
-                    ? "Update Goal"
-                    : "Create Goal"}
+                    ? "Update Budget"
+                    : "Create Budget"}
               </Button>
               {onSuccess && (
                 <Button type="button" variant="outline" onClick={onSuccess}>

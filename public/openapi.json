@@ -1,9 +1,9 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "title": "Quinva API Documentation",
+    "title": "API Documentation",
     "version": "1.0.0",
-    "description": "API for managing groups and expenses in Quinva"
+    "description": "This is the OpenAPI specification for your project."
   },
   "servers": [
     {
@@ -145,11 +145,100 @@
   },
   "outputDir": "./public",
   "paths": {
+    "/budgets": {
+      "get": {
+        "operationId": "get-budgets",
+        "summary": "Get user budgets with filtering and pagination",
+        "description": "Retrieve a paginated list of budgets for the authenticated user with optional filtering",
+        "tags": [
+          "Budgets"
+        ],
+        "parameters": [],
+        "responses": {
+          "400": {
+            "$ref": "#/components/responses/400"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        }
+      },
+      "post": {
+        "operationId": "post-budgets",
+        "summary": "Create a new budget",
+        "description": "Create a new budget for the authenticated user",
+        "tags": [
+          "Budgets"
+        ],
+        "parameters": [],
+        "responses": {
+          "400": {
+            "$ref": "#/components/responses/400"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        }
+      }
+    },
+    "/budgets/{id}": {
+      "get": {
+        "operationId": "get-budgets-{id}",
+        "summary": "Get budget by ID",
+        "description": "Retrieve a specific budget by its ID with associated expenses",
+        "tags": [
+          "Budgets"
+        ],
+        "parameters": [],
+        "responses": {
+          "400": {
+            "$ref": "#/components/responses/400"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        }
+      },
+      "put": {
+        "operationId": "put-budgets-{id}",
+        "summary": "Update budget by id",
+        "description": "Update a specific budget by its ID",
+        "tags": [
+          "Budgets"
+        ],
+        "parameters": [],
+        "responses": {
+          "400": {
+            "$ref": "#/components/responses/400"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        }
+      },
+      "delete": {
+        "operationId": "delete-budgets-{id}",
+        "summary": "Delete a specific budget by its ID",
+        "description": "Delete a specific budget by its ID",
+        "tags": [
+          "Budgets"
+        ],
+        "parameters": [],
+        "responses": {
+          "400": {
+            "$ref": "#/components/responses/400"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        }
+      }
+    },
     "/expenses": {
       "get": {
         "operationId": "get-expenses",
-        "summary": "",
-        "description": "",
+        "summary": "Get user expenses with filtering and pagination",
+        "description": "Retrieve a paginated list of expenses for the authenticated user with optional filtering",
         "tags": [
           "Expenses"
         ],
@@ -165,8 +254,8 @@
       },
       "post": {
         "operationId": "post-expenses",
-        "summary": "",
-        "description": "",
+        "summary": "Create a new expense",
+        "description": "Create a new expense for the authenticated user",
         "tags": [
           "Expenses"
         ],
@@ -184,8 +273,8 @@
     "/expenses/{id}": {
       "get": {
         "operationId": "get-expenses-{id}",
-        "summary": "",
-        "description": "",
+        "summary": "Get expense by ID",
+        "description": "Retrieve a specific expense by its ID",
         "tags": [
           "Expenses"
         ],
@@ -201,8 +290,8 @@
       },
       "put": {
         "operationId": "put-expenses-{id}",
-        "summary": "",
-        "description": "",
+        "summary": "Update an existing expense",
+        "description": "Update an existing expense by its ID for the authenticated user",
         "tags": [
           "Expenses"
         ],
@@ -218,8 +307,8 @@
       },
       "delete": {
         "operationId": "delete-expenses-{id}",
-        "summary": "",
-        "description": "",
+        "summary": "Delete an existing expense",
+        "description": "Delete an existing expense by its ID for the authenticated user",
         "tags": [
           "Expenses"
         ],
@@ -234,13 +323,13 @@
         }
       }
     },
-    "/expenses/categories": {
+    "/stats": {
       "get": {
-        "operationId": "get-expenses-categories",
-        "summary": "",
-        "description": "",
+        "operationId": "get-stats",
+        "summary": "Get dashboard statistics",
+        "description": "Retrieve overview statistics for expenses and budgets",
         "tags": [
-          "Expenses"
+          "Stats"
         ],
         "parameters": [],
         "responses": {

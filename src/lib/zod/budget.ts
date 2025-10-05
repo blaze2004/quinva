@@ -1,25 +1,25 @@
 import { z } from "zod";
 
-export const CreateGoalSchema = z.object({
+export const CreateBudgetSchema = z.object({
   name: z
     .string()
-    .min(1, "Goal name is required")
-    .max(100, "Goal name is too long"),
+    .min(1, "Budget name is required")
+    .max(100, "Budget name is too long"),
   description: z.string().max(500, "Description is too long").optional(),
   targetAmount: z.number().positive("Target amount must be positive").max(100000000, "Target amount is too large"),
   deadline: z.iso.datetime().optional(),
 });
 
-export const UpdateGoalSchema = CreateGoalSchema.partial();
+export const UpdateBudgetSchema = CreateBudgetSchema.partial();
 
-export const GoalQuerySchema = z.object({
+export const BudgetQuerySchema = z.object({
   page: z.coerce.number().int().positive().default(1),
   limit: z.coerce.number().int().min(1).max(50).default(10),
   isCompleted: z.coerce.boolean().optional(),
   hasDeadline: z.coerce.boolean().optional(),
 });
 
-export const GoalSchema = z.object({
+export const BudgetSchema = z.object({
   id: z.string(),
   name: z.string(),
   description: z.string().nullable(),
@@ -31,14 +31,14 @@ export const GoalSchema = z.object({
   createdAt: z.date(),
   updatedAt: z.date(),
   // Calculated fields
-  progressPercentage: z.number().min(0).max(100),
+  spentPercentage: z.number().min(0).max(100),
   remainingAmount: z.number(),
   daysRemaining: z.number().nullable(),
   isOverdue: z.boolean(),
 });
 
-export const GoalListResponseSchema = z.object({
-  goals: z.array(GoalSchema),
+export const BudgetListResponseSchema = z.object({
+  budgets: z.array(BudgetSchema),
   pagination: z.object({
     page: z.number(),
     limit: z.number(),
@@ -49,7 +49,7 @@ export const GoalListResponseSchema = z.object({
   }),
 });
 
-export const GoalWithExpensesSchema = GoalSchema.extend({
+export const BudgetWithExpensesSchema = BudgetSchema.extend({
   expenses: z.array(
     z.object({
       id: z.string(),
@@ -62,6 +62,6 @@ export const GoalWithExpensesSchema = GoalSchema.extend({
 });
 
 
-export type Goal = z.infer<typeof GoalSchema>;
-export type GoalListResponse = z.infer<typeof GoalListResponseSchema>;
-export type GoalWithExpenses = z.infer<typeof GoalWithExpensesSchema>;
+export type Budget = z.infer<typeof BudgetSchema>;
+export type BudgetListResponse = z.infer<typeof BudgetListResponseSchema>;
+export type BudgetWithExpenses = z.infer<typeof BudgetWithExpensesSchema>;
