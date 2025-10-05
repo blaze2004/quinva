@@ -1,5 +1,5 @@
 "use client";
-import { CircleUserRound, Home, Receipt, Target } from "lucide-react";
+import { Book, CircleUserRound, Home, Receipt, Target } from "lucide-react";
 import { AppSidebar, type SidebarProps } from "./app-sidebar";
 
 export const sidebarData: SidebarProps = {
@@ -26,7 +26,13 @@ export const sidebarData: SidebarProps = {
       icon: CircleUserRound,
     },
   ],
-  navSecondary: [],
+  navSecondary: [
+    {
+      title: "API Docs",
+      url: "/api/docs",
+      icon: Book,
+    },
+  ],
 };
 
 export default function QuinvaSidebar({

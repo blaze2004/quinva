@@ -20,7 +20,7 @@ Quinva is a personal finance management application designed to help you track y
 
 ## Documentation
 
-*   [Architecture](architecture.md)
+*   [Architecture](docs/architecture.md)
 *   [OpenAPI.json](public/openapi.json)
 *   [API Documentation](https://quinva.visualbrahma.tech/api/docs)
 
